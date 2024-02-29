@@ -8,6 +8,7 @@ import Footer from './Components/Footer';
 // Login and register components
 import { Login } from './Login';
 import { Register } from './Register';
+import AccountsDashboard from './Components/Dashboard/accountdashboard'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('landing');
@@ -18,6 +19,11 @@ function App() {
 
   return (
     <div className="App">
+              {
+          currentPage === 'accounts' && (
+            <AccountsDashboard />
+          )
+        }
       {
         currentPage === 'landing' && (
           <>
@@ -38,6 +44,7 @@ function App() {
           <Register onFormSwitch={() => navigateTo('login')} />
         )
       }
+
     </div>
   );
 }
