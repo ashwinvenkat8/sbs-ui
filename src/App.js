@@ -93,16 +93,46 @@
 // export default App;
 
 
-import React from 'react';
+// import React from 'react';
+// import './App.css';
+// import RegistrationForm from './Components/Register/registrationForm'; // Ensure this path is correct
+
+// function App() {
+//   return (
+//     <div className="App">
+//       <RegistrationForm />
+//     </div>
+//   );
+// }
+
+// export default App;
+
+import React, { useState } from 'react';
 import './App.css';
-import RegistrationForm from './Components/Register/registrationForm'; // Ensure this path is correct
+import RegistrationForm from './Components/Register/registrationForm'; // Assuming the folder is 'Registration' and the file is 'registrationForm.jsx'
+import LoginForm from './Components/Login/login'; // Assuming the folder is 'Login' and the file is 'login.jsx'
 
 function App() {
-  return (
-    <div className="App">
-      <RegistrationForm />
-    </div>
-  );
+    const [showLogin, setShowLogin] = useState(true);
+
+    const handleRegisterRedirect = () => {
+        setShowLogin(false);
+    };
+
+    const handleLoginRedirect = () => {
+        setShowLogin(true);
+    };
+
+    return (
+        <div className="App">
+            {showLogin ? (
+                <LoginForm onRegisterRedirect={handleRegisterRedirect} />
+            ) : (
+                <RegistrationForm onLoginRedirect={handleLoginRedirect} />
+            )}
+        </div>
+    );
 }
 
 export default App;
+
