@@ -196,9 +196,10 @@
 // export default RegistrationForm;
 
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom'; 
 import './registration.css'; // Ensure this path is correct for your CSS file
 
-const RegistrationForm = () => {
+const RegistrationForm = (props) => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -262,7 +263,8 @@ const RegistrationForm = () => {
             const result = await response.json();
             console.log('Registration success:', result);
             //Function to redirect to login page:
-            alert("success");
+            //alert("success");
+            props.onLoginRedirect(); 
             // Optionally reset form or redirect the user
         } catch (error) {
             console.error('Registration error:', error);
