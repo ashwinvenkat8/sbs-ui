@@ -77,7 +77,7 @@
 import React, { useState } from 'react';
 import './login.css'; // Make sure the path to your CSS file is correct
 
-const LoginForm = ({ onRegisterRedirect }) => {
+const LoginForm = ({ onRegisterRedirect, onHomeRedirect }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -148,6 +148,7 @@ const LoginForm = ({ onRegisterRedirect }) => {
                     <a href="#" onClick={onRegisterRedirect}>New Registration</a>
                     <a href="#">Forgot Password?</a>
                 </div>
+                <button type="button" className="home-button" onClick={onHomeRedirect}>Home</button>
             </form>
         </div>
     );

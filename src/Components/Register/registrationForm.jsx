@@ -199,7 +199,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom'; 
 import './registration.css'; // Ensure this path is correct for your CSS file
 
-const RegistrationForm = (props) => {
+const RegistrationForm = ({onHomeRedirect,onLoginRedirect}) => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -264,7 +264,7 @@ const RegistrationForm = (props) => {
             console.log('Registration success:', result);
             //Function to redirect to login page:
             //alert("success");
-            props.onLoginRedirect(); 
+            onLoginRedirect(); 
             // Optionally reset form or redirect the user
         } catch (error) {
             console.error('Registration error:', error);
@@ -359,6 +359,10 @@ const RegistrationForm = (props) => {
                 {errorMessage && <div className="error-message">{errorMessage}</div>}
             </div>
             <button type="submit" className="submit-button">Register</button>
+            <div className="form-footer">
+                <button type="button" onClick={onHomeRedirect} className="form-footer-button">Home</button>
+                <button type="button" onClick={onLoginRedirect} className="form-footer-button">Login</button>
+            </div>
         </form>
     );
 };
