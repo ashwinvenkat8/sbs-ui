@@ -75,9 +75,13 @@
 // export default LoginForm;
 
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+
 import './login.css'; // Make sure the path to your CSS file is correct
 
-const LoginForm = ({ onRegisterRedirect, onHomeRedirect }) => {
+const LoginForm = () => {
+
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -107,6 +111,8 @@ const LoginForm = ({ onRegisterRedirect, onHomeRedirect }) => {
             if (response.ok) {
                 console.log('Login successful:', data);
                 alert("Login success");
+                //localStorage.setItem('authToken', data.token); 
+                navigate('/dashboard');
                 // Handle successful login here, e.g., redirecting the user or storing the login token
             } else {
                 // Handle errors, e.g., displaying a message to the user
@@ -145,10 +151,12 @@ const LoginForm = ({ onRegisterRedirect, onHomeRedirect }) => {
 
                 <button type="submit" className="login-button">Login</button>
                 <div className="links">
-                    <a href="#" onClick={onRegisterRedirect}>New Registration</a>
-                    <a href="#">Forgot Password?</a>
+                  {/* Use Link component for navigation */}
+                  <Link to="/register">New Registration</Link>
+                    {/* Assuming you have a forgot password route */}
+                    <Link to="/forgot-password">Forgot Password?</Link>
                 </div>
-                <button type="button" className="home-button" onClick={onHomeRedirect}>Home</button>
+                <button type="button" onClick={() => navigate('/')} className="form-footer-button">Home</button>
             </form>
         </div>
     );

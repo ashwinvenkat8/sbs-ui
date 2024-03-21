@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../Assets/Logo.svg";
 import { HiOutlineBars3 } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -15,7 +16,9 @@ import CommentRoundedIcon from "@mui/icons-material/CommentRounded";
 import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";
 // import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 
-const Navbar = ({ navigateTo }) => { // Destructure navigateTo from props
+const Navbar = () => { // Destructure navigateTo from props
+
+  const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState(false);
 
   const menuOptions = [
@@ -37,7 +40,7 @@ const Navbar = ({ navigateTo }) => { // Destructure navigateTo from props
         <a href="#">Services</a>
         <a href="#">Contact</a>
         {/* Login Button */}
-        <button className="primary-button" onClick={() => navigateTo('login')}>
+        <button className="primary-button" onClick={() => navigate('/login')}>
           Login
         </button>
       </div>

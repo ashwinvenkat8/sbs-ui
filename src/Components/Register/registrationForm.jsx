@@ -197,9 +197,12 @@
 
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom'; 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './registration.css'; // Ensure this path is correct for your CSS file
 
-const RegistrationForm = ({onHomeRedirect,onLoginRedirect}) => {
+const RegistrationForm = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -264,7 +267,7 @@ const RegistrationForm = ({onHomeRedirect,onLoginRedirect}) => {
             console.log('Registration success:', result);
             //Function to redirect to login page:
             //alert("success");
-            onLoginRedirect(); 
+            navigate('/login')
             // Optionally reset form or redirect the user
         } catch (error) {
             console.error('Registration error:', error);
@@ -360,8 +363,8 @@ const RegistrationForm = ({onHomeRedirect,onLoginRedirect}) => {
             </div>
             <button type="submit" className="submit-button">Register</button>
             <div className="form-footer">
-                <button type="button" onClick={onHomeRedirect} className="form-footer-button">Home</button>
-                <button type="button" onClick={onLoginRedirect} className="form-footer-button">Login</button>
+                <button type="button" onClick={() => navigate('/')} className="form-footer-button">Home</button>
+                <button type="button" onClick={() => navigate('/login')} className="form-footer-button">Login</button>
             </div>
         </form>
     );
