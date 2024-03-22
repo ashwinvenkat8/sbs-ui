@@ -1,0 +1,49 @@
+.manager-dashboard {
+    font-family: 'Arial', sans-serif;
+    margin: 20px;
+    color: #333;
+}
+
+.manager-dashboard h1 {
+    color: #0A58CA;
+}
+
+.manager-dashboard table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.manager-dashboard th,
+.manager-dashboard td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.manager-dashboard th {
+    background-color: #007bff;
+    color: white;
+}
+
+.manager-dashboard td button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.manager-dashboard td button:first-child {
+    background-color: #28a745;
+    color: white;
+}
+
+.manager-dashboard td button:last-child {
+    background-color: #dc3545;
+    color: white;
+}
+
+.manager-dashboard tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
