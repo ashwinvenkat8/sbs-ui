@@ -1,72 +1,89 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import axios from "axios";
 
 export default function UserPage() {
-  // This is the base URL for your API
-  const baseUrl = "http://127.0.0.1:8080/api/v1/user/account";
-
-  let navigate = useNavigate();
-  const { userId } = useParams(); // Grab the userId from the URL
-
-  // State for user details
-  const [user, setUser] = useState({
-    userId: "",
+  const profileUrl = "http://127.0.0.1:8080/api/v1/user/profile"; 
+  const accountUrl = "http://127.0.0.1:8080/api/v1/user/account";
+  const navigate = useNavigate();
+  const { userId } = useParams();
+  
+  const [userInfo, setUserInfo] = useState({
     accountNumber: "",
-    accountHolder: "",
-    accountType: "",
-    contact: "",
-    email: "",
-    password: "",
+    first_name: "",
+    middle_name: "",
+    last_name: "",
+    phone_number: "",
+    address: "",
   });
-
   const [readOnly, setReadOnly] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  // Fetch user data from the API
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/${userId}`);
-        setUser(response.data); // Set user data from API response
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          navigate('/login');
+          return;
+        }
+        const config = {
+          headers: { Authorization: `Bearer ${token}` },
+        };
+        const accountResponse = await axios.get(`${accountUrl}/${userId}`, config);
+        const profileResponse = await axios.get(`${profileUrl}/${userId}`, config);
+
+        setUserInfo({
+          accountNumber: accountResponse.data.accountNumber,
+          ...profileResponse.data,
+        });
       } catch (error) {
         console.error("Error fetching user data:", error);
-        // Handle error here (e.g., set error message state, navigate to an error page, etc.)
+        setErrorMessage("Error fetching user data.");
       }
     };
 
     fetchUserData();
-  }, [userId, baseUrl]);
+  }, [userId, navigate]);
 
-  // Update user state on form input changes
   const handleChange = (e) => {
-    setUser({
-      ...user,
-      [e.target.name]: e.target.value,
-    });
+    setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   };
 
-  // Handle form submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Perform PUT request to update user data here
-    // ...
+    const token = localStorage.getItem('authToken');
+    try {
+      await axios.put(`${profileUrl}/${userId}`, {
+        phone_number: userInfo.phone_number,
+        address: userInfo.address,
+      }, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      alert("Details updated successfully.");
+      setReadOnly(true);
+    } catch (error) {
+      console.error("Error updating user profile:", error);
+      setErrorMessage("Error updating profile.");
+    }
   };
 
-  // Toggle read-only state for editing
-  const handleEditClick = () => {
-    setReadOnly(!readOnly);
-  };
+  const handleEditClick = () => setReadOnly(!readOnly);
 
-  // Handle account deletion
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this account?")) {
       try {
-        // Perform DELETE request to delete the user account here
-        // ...
-        navigate("/"); // Redirect to the home page after deletion
+        const token = localStorage.getItem('authToken');
+        await axios.delete(`${profileUrl}/1`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        alert("Account deleted successfully.");
+        navigate("/");
       } catch (error) {
         console.error("Error deleting account:", error);
-        // Handle error here
+        setErrorMessage("Error during account deletion.");
       }
     }
   };
@@ -74,30 +91,37 @@ export default function UserPage() {
   return (
     <div className="container m-auto row mt-5 d-flex align-items-center col-lg-5">
       <h1 className="text-start col-12">My Account</h1>
+      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
       <div className="col-12">
-        <button
-          className="btn btn-outline-primary float-end"
-          onClick={handleEditClick}
-        >
+        <button className="btn btn-outline-primary float-end" onClick={handleEditClick}>
           {readOnly ? "Edit" : "Cancel"}
         </button>
       </div>
-      <form className="row g-3" onSubmit={handleSubmit}>
-        {/* Form fields here, similar to the ones you have */}
-        {/* ... */}
-        <div className="col-12 my-4 mt-lg-5 d-flex justify-content-between">
-          <Link to="/" className="btn btn-outline-info">
-            Back to Home
-          </Link>
-          <button
-            type="button"
-            className="btn btn-outline-danger"
-            onClick={handleDelete}
-          >
-            Delete account
-          </button>
-        </div>
-      </form>
+      <div className="w-100">
+        <p>Account Number: {userInfo.accountNumber}</p>
+        <p>First Name: {userInfo.first_name}</p>
+        <p>Middle Name: {userInfo.middle_name}</p>
+        <p>Last Name: {userInfo.last_name}</p>
+        <form className="row g-3" onSubmit={handleSubmit}>
+          <div className="col-12">
+            <label>Phone Number</label>
+            <input type="text" className="form-control" name="phone_number" value={userInfo.phone_number} onChange={handleChange} disabled={readOnly} />
+          </div>
+          <div className="col-12">
+            <label>Address</label>
+            <input type="text" className="form-control" name="address" value={userInfo.address} onChange={handleChange} disabled={readOnly} />
+          </div>
+          {!readOnly && (
+            <div className="col-12">
+              <button type="submit" className="btn btn-success">Save Changes</button>
+            </div>
+          )}
+        </form>
+      </div>
+      <div className="col-12 my-4 d-flex justify-content-between">
+        <Link to="/" className="btn btn-outline-info">Back to Home</Link>
+        <button type="button" className="btn btn-outline-danger" onClick={handleDelete}>Delete Account</button>
+      </div>
     </div>
   );
 }
