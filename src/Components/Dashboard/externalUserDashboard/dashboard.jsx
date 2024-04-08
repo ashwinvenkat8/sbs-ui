@@ -9,6 +9,7 @@ import { AddFunds } from './addfunds';
 import { TransactionHistory } from './transactionhistory';
 
 const UserDashboard = () => {
+    
     const navigate = useNavigate();
     const [currentView, setCurrentView] = useState('welcome');
     const [username, setUsername] = useState('');

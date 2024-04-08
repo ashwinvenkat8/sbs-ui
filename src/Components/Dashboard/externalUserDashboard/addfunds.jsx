@@ -11,7 +11,7 @@ export function AddFunds({ token, onCancel, onFundsAdded }) {
         }
 
         try {
-            const response = await fetch('http://127.0.0.1:8080/api/v1/user/addfunds', { // Your API endpoint to add funds
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/v1/user/addfunds', { // Your API endpoint to add funds
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

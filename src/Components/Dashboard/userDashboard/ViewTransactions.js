@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function ViewTransactions() {
-  const url = "http://localhost:3000/users";
+  const url = process.env.REACT_APP_BACKEND_URL + "/users";
 
   let navigate = useNavigate();
 

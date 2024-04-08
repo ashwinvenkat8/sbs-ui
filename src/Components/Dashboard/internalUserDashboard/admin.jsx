@@ -11,7 +11,7 @@
 //     const fetchAccountHolders = async () => {
 //         try {
 //             const token = localStorage.getItem('authToken'); // or sessionStorage.getItem('authToken')
-//             const response = await fetch('http://127.0.0.1:8080/api/v1/user/account/all', {
+//             const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/v1/user/account/all', {
 //                 headers: {
 //                     'Authorization': `Bearer ${token}`
 //                 }

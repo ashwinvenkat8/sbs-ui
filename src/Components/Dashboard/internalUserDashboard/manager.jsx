@@ -6,7 +6,7 @@ const ManagerDashboard = () => {
 
     useEffect(() => {
         // Fetch critical transactions from your API
-        fetch('http://localhost:8080/api/v1/transactions/critical') // Adjust the API endpoint as needed
+        fetch(process.env.REACT_APP_BACKEND_URL+'/api/v1/transactions/critical') // Adjust the API endpoint as needed
             .then(response => response.json())
             .then(data => setCriticalTransactions(data))
             .catch(error => console.error('Error fetching critical transactions:', error));

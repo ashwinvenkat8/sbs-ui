@@ -8,7 +8,7 @@ export function TransferFunds({ token, onCancel }) {
     const handleTransfer = async () => {
         try {
             // Assuming you have an API endpoint to handle fund transfers
-            const response = await fetch('http://127.0.0.1:8080/api/v1/transfer', {
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/v1/transfer', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
