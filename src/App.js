@@ -51,7 +51,7 @@ import UserDashboard from './Components/Dashboard/externalUserDashboard/dashboar
 // import { useAuth } from './Components/Auth/AuthProvider';
 
 const ProtectedRoute = ({ children }) => {
-    const isAuthenticated = Boolean(localStorage.getItem("token")); // Check for authentication token
+    const isAuthenticated = Boolean(localStorage.getItem("authToken")); // Check for authentication token
     return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
@@ -65,7 +65,7 @@ const App = () => {
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/register" element={<RegistrationForm />} />
                     <Route
-                        path="/dashboard/*"
+                        path="/dashboard"
                         element={
                             <ProtectedRoute>
                                 <UserDashboard />

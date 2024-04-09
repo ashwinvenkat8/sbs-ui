@@ -1,27 +1,44 @@
 import React, { useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
 export function TransferFunds({ token, onCancel }) {
-    const [recipientName, setRecipientName] = useState('');
-    const [accountNumber, setAccountNumber] = useState('');
-    const [amount, setAmount] = useState('');
+    // const [recipientName, setRecipientName] = useState('');
+    const [accountNumber, setAccountNumber] = useState(Number);
+    const [amount, setAmount] = useState(Number);
+    // const [accountDetails, setAccountDetails] = useState({});
 
     const handleTransfer = async () => {
         try {
+            const token = localStorage.getItem('authToken');
+            const decodeToken = jwtDecode(token);
+
+            const accountId = decodeToken.accountId;
+
+            const accountResponse = await fetch(process.env.REACT_APP_BACKEND_URL + '/user/account/' + `${accountId}`, {
+                headers: { 'Authorization': `${token}` }
+            });
+            if (!accountResponse.ok) throw new Error('Failed to fetch user details');
+            
+            const data = await accountResponse.json();
+            
+            const fromAccountNumber = data.accountNumber;
+            
             // Assuming you have an API endpoint to handle fund transfers
-            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/v1/transfer', {
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/transaction/new', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    recipientName,
-                    accountNumber,
+                    from: fromAccountNumber,
+                    to: accountNumber,
                     amount,
                 }),
             });
             if (!response.ok) throw new Error('Failed to transfer funds');
-            alert('Funds transferred successfully!');
+            const responseJson = await response.json();
+            alert(responseJson.message);
             // Clear form or handle success
         } catch (error) {
             console.error('Error transferring funds:', error);
@@ -32,19 +49,11 @@ export function TransferFunds({ token, onCancel }) {
     return (
         <div>
             <h2>Transfer Funds</h2>
-            <div>
-                <label>Recipient Name:</label>
-                <input
-                    type="text"
-                    value={recipientName}
-                    onChange={e => setRecipientName(e.target.value)}
-                    placeholder="Enter recipient's name"
-                />
-            </div>
+
             <div>
                 <label>Account Number:</label>
                 <input
-                    type="text"
+                    type="number"
                     value={accountNumber}
                     onChange={e => setAccountNumber(e.target.value)}
                     placeholder="Enter recipient's account number"

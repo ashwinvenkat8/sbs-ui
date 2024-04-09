@@ -1,7 +1,7 @@
 // AddFunds.jsx
 import React, { useState } from 'react';
 
-export function AddFunds({ token, onCancel, onFundsAdded }) {
+export function Payments({ token, onCancel, onFundsAdded }) {
     const [amount, setAmount] = useState('');
 
     const handleAddFunds = async () => {
