@@ -48,6 +48,7 @@ import RegistrationForm from './Components/Register/RegistrationForm';
 import LoginForm from './Components/Login/LoginForm';
 import AdminDashboard from './Components/Dashboard/internalUserDashboard/admin';
 import UserDashboard from './Components/Dashboard/externalUserDashboard/dashboard';
+import MerchantDashboard from './Components/Dashboard/externalUserDashboard/merchant/merchantdashboard';
 // import { useAuth } from './Components/Auth/AuthProvider';
 
 const ProtectedRoute = ({ children }) => {
@@ -69,6 +70,14 @@ const App = () => {
                         element={
                             <ProtectedRoute>
                                 <UserDashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/merchant_dashboard"
+                        element={
+                            <ProtectedRoute>
+                                <MerchantDashboard />
                             </ProtectedRoute>
                         }
                     />
