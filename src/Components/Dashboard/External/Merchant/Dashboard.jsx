@@ -27,7 +27,7 @@ const MerchantDashboard = () => {
                 
                 
                 // Assuming the backend endpoint `/user/details` expects a GET request
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/account/${accountId}`, {
+                const response = await fetch(`${process.env.API_URL}/user/account/${accountId}`, {
                     method: 'GET',
                     headers: { 
                         'Authorization': `${token}`

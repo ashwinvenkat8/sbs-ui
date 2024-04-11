@@ -9,7 +9,7 @@ export default function AdminProfile({ token }) {
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
-                const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/v1/user/profile/YOUR_USER_ID', {
+                const response = await fetch(process.env.API_URL + '/api/v1/user/profile/YOUR_USER_ID', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (!response.ok) throw new Error('Failed to fetch user details');
@@ -26,7 +26,7 @@ export default function AdminProfile({ token }) {
 
     const handleUpdateDetails = async () => {
         try {
-            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/v1/user/profile/YOUR_USER_ID' , {
+            const response = await fetch(process.env.API_URL + '/api/v1/user/profile/YOUR_USER_ID' , {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,

@@ -29,7 +29,7 @@ export function Profile({ token }) {
                 setaccountId(accountId);
                 // console.log(decodeToken.userId)
                 // console.log(userId)
-                const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/user/account/' + `${accountId}`, {
+                const response = await fetch(process.env.API_URL + '/user/account/' + `${accountId}`, {
                     headers: { 'Authorization': `${token}` }
                 });
                 if (!response.ok) throw new Error('Failed to fetch user details');
@@ -51,7 +51,7 @@ export function Profile({ token }) {
     const handleUpdateDetails = async () => {
         
         try {
-            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/user/profile/' + `${userId}`, {
+            const response = await fetch(process.env.API_URL + '/user/profile/' + `${userId}`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `${token}`,

@@ -6,11 +6,11 @@ Built with **React.js 18.2.0**
 1. Create a `.env` file and add the following:
     ```
     NNODE_ENV=<ENV>
-    REACT_APP_BACKEND_URL=<SBS_API_BASE_URL>
+    API_URL=<API_BASE_URL>
     ```
     where:
     - `NODE_ENV` = `development` or `production`
-    - `REACT_APP_BACKEND_URL` = `http://localhost:5000/api/v1`
+    - `API_URL` = `http://localhost:5000/api/v1`
 
 2. Install dependencies: `npm install`
 

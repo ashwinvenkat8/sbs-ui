@@ -11,7 +11,7 @@ import ManagerDashboard from './Components/Dashboard/Internal/SystemManager/Dash
 import EmployeeDashboard from './Components/Dashboard/Internal/Employee/Dashboard';
 
 const ProtectedRoute = ({ children }) => {
-    const isAuthenticated = Boolean(localStorage.getItem("authToken")); // Check for authentication token
+    const isAuthenticated = Boolean(localStorage.getItem("authToken"));
     return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
@@ -24,7 +24,7 @@ const App = () => {
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/register" element={<RegistrationForm />} />
                     <Route
-                        path="/dashboard"
+                        path="/customer/dashboard"
                         element={
                             <ProtectedRoute>
                                 <UserDashboard />
@@ -32,7 +32,7 @@ const App = () => {
                         }
                     />
                     <Route
-                        path="/merchant_dashboard"
+                        path="/merchant/dashboard"
                         element={
                             <ProtectedRoute>
                                 <MerchantDashboard />
@@ -40,7 +40,7 @@ const App = () => {
                         }
                     />
                     <Route
-                        path="/admin_dashboard/"
+                        path="/internal/admin/dashboard"
                         element={
                             <ProtectedRoute>
                                 <AdminDashboard />
@@ -48,7 +48,7 @@ const App = () => {
                         }
                     />
                      <Route
-                        path="/mgr_dashboard/"
+                        path="/internal/manager/dashboard"
                         element={
                             <ProtectedRoute>
                                 <ManagerDashboard />
@@ -56,7 +56,7 @@ const App = () => {
                         }
                     />
                        <Route
-                        path="/emp_dashboard/"
+                        path="/internal/employee/dashboard"
                         element={
                             <ProtectedRoute>
                                 <EmployeeDashboard />

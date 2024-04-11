@@ -24,7 +24,7 @@ export const useAuth = () => {
         // Send logout request to the backend
         try {
             
-          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/logout`, {
+          const response = await fetch(`${process.env.API_URL}/auth/logout`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
