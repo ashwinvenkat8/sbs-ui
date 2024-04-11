@@ -17,9 +17,6 @@ img {
 body {
   max-width: 100%;
   overflow-x: hidden;
-}
-
-body {
   background-color: #cfe0e8;
 }
 
@@ -87,7 +84,6 @@ nav {
 .primary-heading {
   font-size: clamp(2rem, 5vw, 4rem);
   color: black;
-  /* line-height: 5rem; */
   max-width: 600px;
 }
 .primary-text {
