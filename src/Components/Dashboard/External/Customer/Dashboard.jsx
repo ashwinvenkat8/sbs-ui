@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Profile } from './profile';
-import { TransferFunds } from './transferfunds';
+import { Profile } from './Profile';
+import { TransferFunds } from './TransferFunds';
 import { jwtDecode } from "jwt-decode";
-import { TransactionHistory } from './transactionhistory';
+import { TransactionHistory } from './TransactionHistory';
 import { useAuth } from '../../../Auth/AuthProvider';
-import { Payments } from './payments';
+import { Payments } from './Payments';
 
 
 const UserDashboard = () => {

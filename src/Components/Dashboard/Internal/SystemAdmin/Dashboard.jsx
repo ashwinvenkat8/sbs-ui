@@ -6,13 +6,13 @@ import {jwtDecode} from 'jwt-decode';
 import './admin.css'
 
 // Sub-components for different admin views
-import AdminProfile from './adminProfile';
-import ListUsers from './listUsers';
-import AuthorizeTransactions from './approvedreviews';
+import AdminProfile from './Profile';
+import ListUsers from './ListUsers';
+import AuthorizeTransactions from './ApprovedReviews';
 import { useAuth } from '../../../Auth/AuthProvider';
-import RequestReviews from './requestaccountrevies';
-import DeletionRequest from './deletionrequests';
-import ApprovedReviews from './approvedreviews';
+import RequestReviews from './RequestAccountReviews';
+import DeletionRequest from './DeletionRequests';
+import ApprovedReviews from './ApprovedReviews';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();

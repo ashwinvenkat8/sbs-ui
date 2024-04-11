@@ -7,13 +7,13 @@ import './manager.css'
 
 // Sub-components for different admin views
 
-import ListUsers from './listtransaction';
+import ListUsers from './ListTransaction';
 import { useAuth } from '../../../Auth/AuthProvider';
 import RequestTransactions from './request_account_transactions';
-import ApprovedReviews from './approvedtransactions';
-import ListTransactions from './listtransaction';
+import ApprovedReviews from './ApprovedTransactions';
+import ListTransactions from './ListTransaction';
 import ManagerProfile from './managerProfile';
-import AuthorizeTransactions from './authorizetransactions';
+import AuthorizeTransactions from './AuthorizeTransactions';
 
 
 const ManagerDashboard = () => {

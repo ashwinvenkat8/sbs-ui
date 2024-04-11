@@ -14,9 +14,8 @@ import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
 import CommentRoundedIcon from "@mui/icons-material/CommentRounded";
 import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";
-// import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 
-const Navbar = () => { // Destructure navigateTo from props
+const Navbar = () => {
 
   const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState(false);
@@ -26,7 +25,6 @@ const Navbar = () => { // Destructure navigateTo from props
     { text: " Services", icon: <InfoIcon /> },
     { text: "Testimonials", icon: <CommentRoundedIcon /> },
     { text: "Contact", icon: <PhoneRoundedIcon /> },
-    // { text: "Cart", icon: <ShoppingCartRoundedIcon /> },
   ];
 
   return (
@@ -35,11 +33,6 @@ const Navbar = () => { // Destructure navigateTo from props
         <img src={Logo} alt="Logo" />
       </div>
       <div className="navbar-links-container">
-        {/* Links */}
-        <a href="#">Home</a>
-        <a href="#">Services</a>
-        <a href="#">Contact</a>
-        {/* Login Button */}
         <button className="primary-button" onClick={() => navigate('/login')}>
           Login
         </button>

@@ -8,9 +8,9 @@ import './employee.css'
 // Sub-components for different admin views
 
 import { useAuth } from '../../../Auth/AuthProvider';
-import RequestTransactions from './request_account_transactions';
-import ApprovedReviews from './approvedtransactions';
-import EmployeeProfile from './employeeProfile';
+import RequestTransactions from './RequestAccountTransactions';
+import ApprovedReviews from './ApprovedTransactions';
+import EmployeeProfile from './Profile';
 
 
 const EmployeeDashboard = () => {

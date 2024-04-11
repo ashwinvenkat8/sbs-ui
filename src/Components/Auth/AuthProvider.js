@@ -18,7 +18,7 @@ export const useAuth = () => {
         setUserRole(role);
         setUserId(userid);
         console.log(userId);
-    }, []);
+    }, [userId]);
 
     const handleLogout = async () => {
         // Send logout request to the backend
