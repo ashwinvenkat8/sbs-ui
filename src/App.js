@@ -46,9 +46,11 @@ import Contact from './Components/Contact';
 import Footer from './Components/Footer';
 import RegistrationForm from './Components/Register/RegistrationForm';
 import LoginForm from './Components/Login/LoginForm';
-import AdminDashboard from './Components/Dashboard/internalUserDashboard/admin';
-import UserDashboard from './Components/Dashboard/externalUserDashboard/dashboard';
+import AdminDashboard from './Components/Dashboard/internalUserDashboard/admin/admindashboard';
+import UserDashboard from './Components/Dashboard/externalUserDashboard/user/dashboard';
 import MerchantDashboard from './Components/Dashboard/externalUserDashboard/merchant/merchantdashboard';
+import ManagerDashboard from './Components/Dashboard/internalUserDashboard/sysManager/managerdashboard';
+import EmployeeDashboard from './Components/Dashboard/internalUserDashboard/employee/employeedashboard';
 // import { useAuth } from './Components/Auth/AuthProvider';
 
 const ProtectedRoute = ({ children }) => {
@@ -86,6 +88,22 @@ const App = () => {
                         element={
                             <ProtectedRoute>
                                 <AdminDashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                     <Route
+                        path="/mgr_dashboard/"
+                        element={
+                            <ProtectedRoute>
+                                <ManagerDashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                       <Route
+                        path="/emp_dashboard/"
+                        element={
+                            <ProtectedRoute>
+                                <EmployeeDashboard />
                             </ProtectedRoute>
                         }
                     />

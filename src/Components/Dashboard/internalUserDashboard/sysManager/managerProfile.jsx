@@ -1,43 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { jwtDecode } from "jwt-decode";
-// import { useAuth } from '../../Auth/AuthProvider';
 
-export function Profile({ token }) {
+export default function ManagerProfile({ token }) {
     const [userDetails, setUserDetails] = useState({});
-    const [userAttributes, setUserAttributes] = useState({});
-    const [accountDetails, setAccountDetails] = useState({});
     const [editMode, setEditMode] = useState(false);
     const [updatedAddress, setUpdatedAddress] = useState('');
     const [updatedPhoneNumber, setUpdatedPhoneNumber] = useState('');
-    const [userId, setUserId] = useState(null);
-    const [accountId, setaccountId] =useState(null);
-   
-    
-    
-    
-    
-    // const { userId, userRole } = useAuth();
 
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
-                const token = localStorage.getItem('authToken');
-                const decodeToken = jwtDecode(token);
-
-                const accountId = decodeToken.accountId;
-                setUserId(decodeToken.userId);
-                setaccountId(accountId);
-                // console.log(decodeToken.userId)
-                // console.log(userId)
-                const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/user/account/' + `${accountId}`, {
-                    headers: { 'Authorization': `${token}` }
+                const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/v1/user/profile/YOUR_USER_ID', {
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (!response.ok) throw new Error('Failed to fetch user details');
                 const data = await response.json();
-                console.log(data);
-                setAccountDetails(data);
-                setUserDetails(data.user);
-                setUserAttributes(data.user.attributes);
+                setUserDetails(data);
                 setUpdatedAddress(data.address);
                 setUpdatedPhoneNumber(data.phone_number);
             } catch (error) {
@@ -48,19 +25,16 @@ export function Profile({ token }) {
     }, [token]); // Dependency array with token to re-fetch if the token changes
 
     const handleUpdateDetails = async () => {
-        
         try {
-            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/user/profile/' + `${userId}`, {
-                method: 'PATCH',
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/v1/user/profile/YOUR_USER_ID' , {
+                method: 'PUT',
                 headers: {
-                    'Authorization': `${token}`,
+                    'Authorization': ` ${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    attributes: {
-                        address: updatedAddress,
-                        phone_number: updatedPhoneNumber
-                    }
+                    address: updatedAddress,
+                    phone_number: updatedPhoneNumber,
                 }),
             });
             if (!response.ok) throw new Error('Failed to update user details');
@@ -73,23 +47,23 @@ export function Profile({ token }) {
 
     return (
         <div>
-            <h2>User Profile</h2>
+            <h2>Admin Profile</h2>
             {!editMode ? (
                 <div>
                     {/* Display all user details */}
                     <p>Username: {userDetails.username}</p>
                     <p>Email: {userDetails.email}</p>
-                    <p>First Name: {userAttributes.first_name}</p>
-                    <p>Middle Name: {userAttributes.middle_name}</p>
-                    <p>Last Name: {userAttributes.last_name}</p>
-                    <p>Date of Birth: {userAttributes.date_of_birth}</p>
-                    <p>Gender: {userAttributes.gender}</p>
-                    <p>SSN: {userAttributes.ssn}</p>
-                    <p>Address: {userAttributes.address}</p>
-                    <p>Phone Number: {userAttributes.phone_number}</p>
+                    <p>First Name: {userDetails.first_name}</p>
+                    <p>Middle Name: {userDetails.middle_name}</p>
+                    <p>Last Name: {userDetails.last_name}</p>
+                    <p>Date of Birth: {userDetails.date_of_birth}</p>
+                    <p>Gender: {userDetails.gender}</p>
+                    <p>SSN: {userDetails.ssn}</p>
+                    <p>Address: {userDetails.address}</p>
+                    <p>Phone Number: {userDetails.phone_number}</p>
                     <p>Role: {userDetails.role}</p>
                     {/* Assuming accountNumber is part of userDetails */}
-                    <p>Account Number: {accountDetails.accountNumber}</p> 
+                    <p>Account Number: {userDetails.accountNumber}</p> 
                     <button onClick={() => setEditMode(true)}>Edit</button>
                 </div>
             ) : (
@@ -99,7 +73,7 @@ export function Profile({ token }) {
                     <label>Address:</label>
                     <input type="text" value={updatedAddress} onChange={e => setUpdatedAddress(e.target.value)} />
                     <label>Phone Number:</label>
-                    <input type="number" value={updatedPhoneNumber} onChange={e => setUpdatedPhoneNumber(e.target.value)} />
+                    <input type="text" value={updatedPhoneNumber} onChange={e => setUpdatedPhoneNumber(e.target.value)} />
                     <button onClick={handleUpdateDetails}>Save</button>
                     <button onClick={() => setEditMode(false)}>Cancel</button>
                 </div>
@@ -107,3 +81,4 @@ export function Profile({ token }) {
         </div>
     );
 }
+

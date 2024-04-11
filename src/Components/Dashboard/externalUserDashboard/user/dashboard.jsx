@@ -6,7 +6,7 @@ import { Profile } from './profile';
 import { TransferFunds } from './transferfunds';
 import { jwtDecode } from "jwt-decode";
 import { TransactionHistory } from './transactionhistory';
-import { useAuth } from '../../Auth/AuthProvider';
+import { useAuth } from '../../../Auth/AuthProvider';
 import { Payments } from './payments';
 
 
@@ -63,7 +63,7 @@ const UserDashboard = () => {
             case 'transferFunds':
                 return <TransferFunds userDetails={userDetails} onCancel={() => setCurrentView('dashboard')} />;
             case 'payments':
-                return <payments userDetails={userDetails} onCancel={() => setCurrentView('welcome')} />;
+                return <Payments userDetails={userDetails} onCancel={() => setCurrentView('welcome')} />;
             default:
                 return (
                     <div>

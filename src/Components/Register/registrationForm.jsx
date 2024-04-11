@@ -317,7 +317,27 @@ const RegistrationForm = () => {
                     </div>
 
                     <label>Phone Number</label>
-                    <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required />
+                    {/* <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required /> */}
+                    
+                    {/* // Changing the value */}
+                    <input
+                        type="tel"
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
+                        onChange={handleChange}
+                        onInput={e => {
+                            // Remove any characters that are not digits
+                            e.target.value = e.target.value.replace(/\D/g, '');
+                            // Limit the value to 10 digits
+                            if (e.target.value.length > 10) {
+                                e.target.value = e.target.value.slice(0, 10);
+                            }
+                        }}
+                        maxLength="10"
+                        required
+                    />
+
+                
 
                     <label>Address</label>
                     <input type="text" name="address" value={formData.address} onChange={handleChange} required />
@@ -331,8 +351,11 @@ const RegistrationForm = () => {
                         <option value="">Select User Type</option>
                         <option value="CUSTOMER">Customer</option>
                         <option value="MERCHANT">Merchant</option>
-                        <option value="EMPLOYEE">Employee</option>
                         <option value="SYSTEM_MANAGER">System Manager</option>
+                        <option value="SYSTEM_ADMIN">System Adminr</option>
+                        <option value="EMPLOYEE">Employee</option>
+                        
+                        
                     </select>
 
                     <label>Email</label>
