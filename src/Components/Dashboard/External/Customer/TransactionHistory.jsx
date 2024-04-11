@@ -16,7 +16,7 @@ export function TransactionHistory() {
                 const decodedToken = jwtDecode(token);
                 const accountId = decodedToken.accountId;
 
-                const response = await fetch(`${process.env.API_URL}/transactions/myTxns/${accountId}`, {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/transactions/myTxns/${accountId}`, {
                     headers: { 'Authorization': token }
                 });
                 

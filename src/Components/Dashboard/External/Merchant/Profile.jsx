@@ -23,7 +23,7 @@ export function Profile({ token }) {
                 setUserId(decodeToken.userId);
                 setaccountId(accountId);
                 
-                const response = await fetch(process.env.API_URL + '/user/account/' + `${accountId}`, {
+                const response = await fetch(process.env.REACT_APP_API_URL + '/user/account/' + `${accountId}`, {
                     headers: { 'Authorization': `${token}` }
                 });
                 
@@ -47,7 +47,7 @@ export function Profile({ token }) {
     const handleUpdateDetails = async () => {
         
         try {
-            const response = await fetch(process.env.API_URL + '/user/profile/' + `${userId}`, {
+            const response = await fetch(process.env.REACT_APP_API_URL + '/user/profile/' + `${userId}`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `${token}`,

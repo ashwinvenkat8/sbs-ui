@@ -9,7 +9,7 @@ const ListTransactions = () => {
         // Function to fetch all transactions
         const fetchUsers = async () => {
             try {
-                const response = await fetch(process.env.API_URL + '/profile/all/${userId}', {
+                const response = await fetch(process.env.REACT_APP_API_URL + '/profile/all/${userId}', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const data = await response.json();
@@ -23,7 +23,7 @@ const ListTransactions = () => {
 
     const fetchUserDetails = async (userId) => {
         try {
-            const response = await fetch(process.env.API_URL + '/profile/all/' + `${userId}`, {
+            const response = await fetch(process.env.REACT_APP_API_URL + '/profile/all/' + `${userId}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (response.ok) {

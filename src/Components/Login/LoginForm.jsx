@@ -53,7 +53,7 @@ const LoginForm = () => {
       const passwordHash = bcrypt.hashSync(password, salt);
 
     
-      const response = await fetch(`${process.env.API_URL}/auth/login`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -208,7 +208,7 @@ export default LoginForm;
 //           const passwordHash = bcrypt.hashSync(password, salt);
     
         
-//           const response = await fetch(`${process.env.API_URL}/auth/login`, {
+//           const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
 //             method: "POST",
 //             headers: {
 //               "Content-Type": "application/json",
@@ -258,7 +258,7 @@ export default LoginForm;
 //     // Call backend OTP verification endpoint
 //     // Assuming the endpoint is "/verify-otp" and expects { username, otp }
 //     try {
-//       const response = await fetch(`${process.env.API_URL}/auth/verify-otp`, {
+//       const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/verify-otp`, {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
