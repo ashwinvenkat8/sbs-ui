@@ -2,17 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import './App.css';
 import Home from './Components/Home';
-import Work from './Components/Work';
-import Contact from './Components/Contact';
-import Footer from './Components/Footer';
-import RegistrationForm from './Components/Register/registrationForm';
+import RegistrationForm from './Components/Register/RegistrationForm';
 import LoginForm from './Components/Login/LoginForm';
-import AdminDashboard from './Components/Dashboard/internalUserDashboard/admin/admindashboard';
-import UserDashboard from './Components/Dashboard/externalUserDashboard/user/dashboard';
-import MerchantDashboard from './Components/Dashboard/externalUserDashboard/merchant/merchantdashboard';
-import ManagerDashboard from './Components/Dashboard/internalUserDashboard/sysManager/managerdashboard';
-import EmployeeDashboard from './Components/Dashboard/internalUserDashboard/employee/employeedashboard';
-// import { useAuth } from './Components/Auth/AuthProvider';
+import AdminDashboard from './Components/Dashboard/Internal/SystemAdmin/Dashboard';
+import UserDashboard from './Components/Dashboard/External/Customer/Dashboard';
+import MerchantDashboard from './Components/Dashboard/External/Merchant/Dashboard';
+import ManagerDashboard from './Components/Dashboard/Internal/SystemManager/Dashboard';
+import EmployeeDashboard from './Components/Dashboard/Internal/Employee/Dashboard';
 
 const ProtectedRoute = ({ children }) => {
     const isAuthenticated = Boolean(localStorage.getItem("authToken")); // Check for authentication token
@@ -20,12 +16,11 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const App = () => {
-
     return (
         <Router>
             <div className="App">
                 <Routes>
-                    <Route path="/" element={<><Home /><Work /><Contact /><Footer /></>} />
+                    <Route path="/" element={<Home />} />
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/register" element={<RegistrationForm />} />
                     <Route

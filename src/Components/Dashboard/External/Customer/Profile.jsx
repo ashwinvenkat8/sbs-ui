@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { jwtDecode } from "jwt-decode";
-// import { useAuth } from '../../Auth/AuthProvider';
 
 export function Profile({ token }) {
     const [userDetails, setUserDetails] = useState({});

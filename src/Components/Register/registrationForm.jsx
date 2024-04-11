@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-// import { useHistory } from 'react-router-dom'; 
-// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import './registration.css';
+import './Registration.css';
 
 const RegistrationForm = () => {
     const navigate = useNavigate();

@@ -1,5 +1,3 @@
-// AuthorizeUserRequests.jsx
-// AuthorizeTransactions.jsx
 import React, { useEffect, useState } from 'react';
 
 const ApprovedTransactions = () => {

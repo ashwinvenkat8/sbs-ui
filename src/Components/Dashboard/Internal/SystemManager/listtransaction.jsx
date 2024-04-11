@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-//import Popup from './userpopup';// Assuming you have this component from previous steps
 
 const ListTransactions = () => {
     const [users, setUsers] = useState([]);

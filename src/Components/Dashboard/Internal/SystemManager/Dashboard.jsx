@@ -1,20 +1,13 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
-import './manager.css'
-
-// Sub-components for different admin views
-
-import ListUsers from './ListTransaction';
+import './Manager.css'
 import { useAuth } from '../../../Auth/AuthProvider';
-import RequestTransactions from './request_account_transactions';
+import RequestTransactions from './RequestAccountTransactions';
 import ApprovedReviews from './ApprovedTransactions';
 import ListTransactions from './ListTransaction';
-import ManagerProfile from './managerProfile';
+import ManagerProfile from './Profile';
 import AuthorizeTransactions from './AuthorizeTransactions';
-
 
 const ManagerDashboard = () => {
     const navigate = useNavigate();

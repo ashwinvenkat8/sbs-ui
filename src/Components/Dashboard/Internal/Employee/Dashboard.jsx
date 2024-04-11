@@ -1,9 +1,7 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
-import './employee.css'
+import './Employee.css'
 
 // Sub-components for different admin views
 

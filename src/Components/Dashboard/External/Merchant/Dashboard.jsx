@@ -1,14 +1,10 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Profile } from './merchantprofile';
-import { TransferFunds } from './RequestPayments';
+import { Profile } from './Profile';
 import { jwtDecode } from "jwt-decode";
-import { TransactionHistory } from './merchanttransactionhistory';
+import { TransactionHistory } from './TransactionHistory';
 import { RequestPayments } from './RequestPayments';
 import { useAuth } from '../../../Auth/AuthProvider';
-import { Payments } from './ReviewRequests';
 
 
 const MerchantDashboard = () => {

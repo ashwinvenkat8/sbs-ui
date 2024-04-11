@@ -1,14 +1,11 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
-import './admin.css'
+import './Admin.css'
 
 // Sub-components for different admin views
 import AdminProfile from './Profile';
 import ListUsers from './ListUsers';
-import AuthorizeTransactions from './ApprovedReviews';
 import { useAuth } from '../../../Auth/AuthProvider';
 import RequestReviews from './RequestAccountReviews';
 import DeletionRequest from './DeletionRequests';

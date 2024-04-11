@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Popup from './UserPopup';// Assuming you have this component from previous steps
+import Popup from './UserPopup';
 
 const ListUsers = () => {
     const [users, setUsers] = useState([]);
     const [selectedUserDetails, setSelectedUserDetails] = useState(null);
-    const token = localStorage.getItem('authToken'); // Assuming the token is stored in localStorage
+    const token = localStorage.getItem('authToken');
 
     useEffect(() => {
         // Function to fetch all users
@@ -14,7 +14,7 @@ const ListUsers = () => {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const data = await response.json();
-                setUsers(data); // Assuming the response is the array of users
+                setUsers(data);
             } catch (error) {
                 console.error('Failed to fetch users:', error);
             }
