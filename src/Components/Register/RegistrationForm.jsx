@@ -60,7 +60,7 @@ const RegistrationForm = () => {
       return;
     }
 
-    const passwordBlacklist = [formData.username, formData.firstName, formData.middleName, formData.lastName, formData.ssn, formData.phoneNumber];
+    const passwordBlacklist = [formData.username, formData.firstName, formData.lastName, formData.ssn, formData.phoneNumber];
     if (passwordBlacklist.join("").includes(formData.password)) {
       setErrorMessage("Your password must not contain any part of your personal information");
       return;
@@ -83,7 +83,6 @@ const RegistrationForm = () => {
       email: DOMPurify.sanitize(formData.email),
       password: passwordHash,
       first_name: DOMPurify.sanitize(formData.firstName),
-      middle_name: DOMPurify.sanitize(formData.middleName),
       last_name: DOMPurify.sanitize(formData.lastName),
       date_of_birth: DOMPurify.sanitize(formData.dateOfBirth),
       gender: DOMPurify.sanitize(formData.gender),
@@ -191,15 +190,6 @@ const RegistrationForm = () => {
                 value={formData.firstName}
                 onChange={handleChange}
                 required
-              />
-            </div>
-            <div>
-              <label>Middle Name</label>
-              <input
-                type="text"
-                name="middleName"
-                value={formData.middleName}
-                onChange={handleChange}
               />
             </div>
             <div>
