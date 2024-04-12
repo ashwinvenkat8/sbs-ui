@@ -5,23 +5,24 @@ import DOMPurify from "dompurify";
 import bcrypt from "bcryptjs-react";
 
 import "./Login.css";
+import { sha256 } from "js-sha256";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const [userId, setUserId] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [otp, setOtp] = useState(""); // New state for OTP
+  const [otp, setOtp] = useState("");
   const [isOtpRequired, setIsOtpRequired] = useState(false);
 
   //password toggling
-  const togglePasswordVisibility = () => { 
+  const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-
-  const handleSubmit = async (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     const alphanumericRegex = /^[a-zA-Z0-9]+$/;
 
@@ -36,107 +37,152 @@ const LoginForm = () => {
       setErrorMessage(
         "Please enter the correct username (in alphanumeric only)"
       );
+      return;
     }
-
     // Checking password minimum length
     if (password.length < 12) {
       setErrorMessage(
         "The password length is too small, please keep the length at least 12"
       );
+      return;
     }
 
     try {
       const sanitizedUsername = DOMPurify.sanitize(username);
 
-      const salt = bcrypt.genSaltSync(10);
-      const passwordHash = bcrypt.hashSync(password, salt);
+      const passwordHash = sha256(password);
 
-    
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: sanitizedUsername, // assuming you still want to sanitize
-          password // send the password as plain text, similar to Postman request
-        }),
-      });
-      
-      const data = await response.json();
+      const loginResponse = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: sanitizedUsername,
+            passwordHash,
+          }),
+        }
+      );
+      const loginData = await loginResponse.json();
 
- 
-
-  if (response.ok) {
-    localStorage.setItem("authToken", data.token);
-
-    console.log(data)
-    const decodedToken = jwtDecode(data.token);
-    console.log(decodedToken) // Corrected function call
-    const userRole = decodedToken.role;
-
-    switch (userRole) {
-      case "SYSTEM_ADMIN":
-        navigate("/internal/admin/dashboard");
-        break;
-      case "SYSTEM_MANAGER":
-        navigate("/internal/manager/dashboard");
-        break;
-      case "EMPLOYEE":
-        navigate("/internal/employee/dashboard");
-        break;
-      case "MERCHANT":
-        navigate("/merchant/dashboard");
-        break;
-      default:
-        navigate("/customer/dashboard");
+      setUserId(loginData.user);
+      if (loginResponse.ok) {
+        setIsOtpRequired(true);
+      }
+    } catch (error) {
+      alert("Login error:", error);
     }
-  } else {
-    setErrorMessage(data.message || "An error occurred during login.");
-  }
-} catch (error) {
-  console.error("Login error:", error);
-  setErrorMessage("Failed to connect to the login service.");
-}
-};
+  };
+
+  const handleOtpVerification = async (e) => {
+    e.preventDefault();
+
+    try {
+      const otpResponse = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/auth/otp/validate`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-User": `${userId}`,
+          },
+          body: JSON.stringify({
+            token: otp,
+          }),
+        }
+      );
+
+      const otpData = await otpResponse.json();
+
+      if (otpResponse.ok) {
+        localStorage.setItem("authToken", otpData.token);
+        const decodedToken = jwtDecode(otpData.token);
+        const userRole = decodedToken.role;
+
+        switch (userRole) {
+          case "SYSTEM_ADMIN":
+            navigate("/internal/admin/dashboard");
+            break;
+          case "SYSTEM_MANAGER":
+            navigate("/internal/manager/dashboard");
+            break;
+          case "EMPLOYEE":
+            navigate("/internal/employee/dashboard");
+            break;
+          case "MERCHANT":
+            navigate("/merchant/dashboard");
+            break;
+          default:
+            navigate("/customer/dashboard");
+        }
+      } else {
+        setErrorMessage(otpData.message || "Invalid OTP. Please try again.");
+      }
+    } catch (error) {
+      alert("OTP verification error:", error);
+    }
+  };
 
   return (
     <div className="login-container">
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={isOtpRequired ? handleOtpVerification : handleLoginSubmit}
+      >
         <h2>Login</h2>
-        <div className="input-field">
-          <label>Username</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-field">
-          <label>Password</label>
-          <input
-            type={showPassword ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          
-          />
-          <button type="button" onClick={togglePasswordVisibility} className="toggle-password"> 
-            {showPassword ? "Hide" : "Show"}
-          </button>
-
-        </div>
+        {!isOtpRequired && (
+          <>
+            <div className="input-field">
+              <label>Username</label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+            <div className="input-field">
+              <label>Password</label>
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="toggle-password"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+          </>
+        )}
+        {isOtpRequired && (
+          <div className="input-field">
+            <label>OTP</label>
+            <input
+              type="text"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              required
+            />
+          </div>
+        )}
 
         {errorMessage && <div className="error-message">{errorMessage}</div>}
 
         <button type="submit" className="login-button">
-          Login
+          {isOtpRequired ? "Verify OTP" : "Login"}
         </button>
-        <div className="links">
-          <Link to="/register">New Registration</Link>
-          {/* <Link to="/forgot-password">Forgot Password?</Link> */}
-        </div>
+        {!isOtpRequired && (
+          <div className="links">
+            <Link to="/register">New Registration</Link>
+            <Link to="/forgot-password">Forgot Password?</Link>
+          </div>
+        )}
         <button
           type="button"
           onClick={() => navigate("/")}
