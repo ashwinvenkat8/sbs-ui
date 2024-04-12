@@ -31,7 +31,7 @@ const LoginForm = () => {
     }
 
     // Checking for special characters in username field
-    if (alphanumericRegex.test(username)) {
+    if (!alphanumericRegex.test(username)) {
       setErrorMessage(
         "Please enter the correct username (in alphanumeric only)"
       );
