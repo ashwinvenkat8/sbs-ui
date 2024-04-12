@@ -11,6 +11,15 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.register-container .easybank-logo {
+    height: 50%;
+    width: 20%;
+}
+
+.register-container .qrcode-2fa {
+    width: 55%;
+}
+
 .register-container label {
     display: block;
     margin: 1rem 0;

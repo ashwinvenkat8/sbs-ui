@@ -171,7 +171,7 @@ const RegistrationForm = () => {
 
   return (
     <div className="register-container">
-      <center><img src="logo512.png" alt="The logo of EasyBank, which is the name itself in Wavefont" /></center>
+      <center><img className="easybank-logo" src="logo512.png" alt="The logo of EasyBank, which is the name itself in Wavefont" /></center>
       <h1>Register</h1>
       <br />
       <form
@@ -338,7 +338,7 @@ const RegistrationForm = () => {
         {showOTPEnrollment && (
           <div>
             <label>Please scan QR Code on Google Authenticator</label>
-            <img src={qrCodeURL} alt="qrcode url" />
+            <center><img className='qrcode-2fa' src={qrCodeURL} alt="QR Code for two-factor authentication enrollment" /></center>
             <label>OTP</label>
             <input
               type="text"
@@ -349,7 +349,7 @@ const RegistrationForm = () => {
             />
           </div>
         )}
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        {errorMessage && <div className="error-message"><center>{errorMessage}</center></div>}
         <br />
         <center>
           <button type="submit" className="register-button">

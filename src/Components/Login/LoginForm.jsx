@@ -166,7 +166,7 @@ const LoginForm = () => {
           </div>
         )}
 
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        {errorMessage && <div className="error-message"><center>{errorMessage}</center></div>}
 
         <center>
           <button type="submit" className="login-button">
