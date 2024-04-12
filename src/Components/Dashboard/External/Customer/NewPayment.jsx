@@ -1,4 +1,3 @@
-// AddFunds.jsx
 import React, { useState } from 'react';
 
 export function NewPayment({ token, onCancel, onFundsAdded }) {
@@ -11,7 +10,7 @@ export function NewPayment({ token, onCancel, onFundsAdded }) {
         }
 
         try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/api/v1/user/addfunds', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/transaction/pay/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': token,
@@ -22,33 +21,42 @@ export function NewPayment({ token, onCancel, onFundsAdded }) {
                 }),
             });
 
-            if (!response.ok) throw new Error('Failed to add funds');
+            if (!response.ok) throw new Error('Payment failed');
             const result = await response.json();
-            
-            alert(`Funds added successfully! New balance: ${result.newBalance}`);
-            
+
+            alert(`Payment succeeded! Current balance: ${result.newBalance}`);
+
             onFundsAdded(result.newBalance);
             setAmount('');
+
         } catch (error) {
-            console.error('Error adding funds:', error);
-            alert('Error adding funds. Please try again.');
+            console.error('Error during payment:', error);
+            alert('Error during payment. Please try again.');
         }
     };
 
     return (
-        <div>
-            <h2>Add Funds</h2>
-            <div>
-                <label>Enter amount to be added:</label>
-                <input
-                    type="number"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    placeholder="Amount"
-                />
-            </div>
-            <button onClick={handleAddFunds}>Add</button>
-            <button onClick={onCancel}>Cancel</button>
+        <div className='new-payment'>
+            <h2>New Payment</h2>
+            <br /><br />
+            <center>
+                <table>
+                    <tr>
+                        <th>Amount</th>
+                        <td>
+                            <input
+                                type="number"
+                                value={amount}
+                                onChange={(e) => setAmount(e.target.value)}
+                                placeholder="Amount"
+                            />
+                        </td>
+                    </tr>
+                </table>
+                <br /><br />
+                <button className='confirm-pay' onClick={handleAddFunds}>Pay</button>
+                <button className='cancel-pay' onClick={onCancel}>Cancel</button>
+            </center>
         </div>
     );
 }

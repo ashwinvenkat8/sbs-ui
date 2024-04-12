@@ -38,6 +38,7 @@ export function TransactionHistory() {
             <br />
             <table>
                 <tr>
+                    <th>Type</th>
                     <th>From</th>
                     <th>To</th>
                     <th>Amount</th>
@@ -45,6 +46,7 @@ export function TransactionHistory() {
                 {transactions.length > 0 ? (
                     transactions.map((transaction, index) => (
                         <tr key={index}>
+                            <td>{transaction.type}</td>
                             <td>{transaction.from}</td>
                             <td>{transaction.to}</td>
                             <td>{transaction.amount}</td>

@@ -32,11 +32,7 @@
     color: #e00;
 }
 
-.customer-dashboard .welcome-message {
-    margin: 1rem;
-    padding: 0;
-}
-
+.customer-dashboard .welcome-message,
 .customer-dashboard .user-details {
     margin: 1rem;
     padding: 0;
@@ -54,14 +50,18 @@
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
-.profile table {
+.profile table,
+.transfer-funds table,
+.new-payment table {
     table-layout: fixed;
     width: max-content;
     text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.profile table tr th, td {
+.profile table tr th, td,
+.transfer-funds table tr th, td,
+.new-payment table tr th, td {
     padding: 0.5rem;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 }
@@ -72,7 +72,27 @@
 }
 
 .profile input[type="text"],
-.profile input[type="tel"] {
+.profile input[type="tel"],
+.new-payment input[type="number"] {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+}
+
+.transfer-funds .send-funds:hover,
+.new-payment .confirm-pay:hover {
+    border: 1px solid #0a0;
+    color: #0a0;
+}
+
+.transfer-funds .cancel-transfer:hover,
+.new-payment .cancel-pay:hover {
+    border: 1px solid #a00;
+    color: #a00;
+}
+
+.transfer-funds input[type="text"],
+.transfer-funds input[type="number"] {
     padding: 0.5rem;
     border: none;
     border-radius: 4px;

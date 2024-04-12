@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 
 export function TransferFunds({ token, onCancel }) {
+    const navigate = useNavigate();
     const [accountNumber, setAccountNumber] = useState(Number);
     const [amount, setAmount] = useState(Number);
 
     const handleTransfer = async () => {
-        try {
+        try  {
             const token = localStorage.getItem('authToken');
             const decodeToken = jwtDecode(token);
 
@@ -19,7 +21,7 @@ export function TransferFunds({ token, onCancel }) {
             
             const data = await accountResponse.json();
             
-            const fromAccountNumber = data.accountNumber;
+            const senderAccountNumber = data.accountNumber;
             
             const response = await fetch(`${process.env.REACT_APP_API_URL}/transaction/new`, {
                 method: 'POST',
@@ -28,15 +30,18 @@ export function TransferFunds({ token, onCancel }) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    from: fromAccountNumber,
+                    from: senderAccountNumber,
                     to: accountNumber,
                     amount,
                 }),
             });
+            
             if (!response.ok) throw new Error('Failed to transfer funds');
             const responseJson = await response.json();
+            
             alert(responseJson.message);
-
+            navigate('/customer/dashboard');
+        
         } catch (error) {
             console.error('Error transferring funds:', error);
             alert('Error transferring funds. Please try again.');
@@ -44,28 +49,38 @@ export function TransferFunds({ token, onCancel }) {
     };
 
     return (
-        <div>
+        <div className='transfer-funds'>
             <h2>Transfer Funds</h2>
-            <div>
-                <label>Account Number:</label>
-                <input
-                    type="number"
-                    value={accountNumber}
-                    onChange={e => setAccountNumber(e.target.value)}
-                    placeholder="Enter recipient's account number"
-                />
-            </div>
-            <div>
-                <label>Amount:</label>
-                <input
-                    type="number"
-                    value={amount}
-                    onChange={e => setAmount(e.target.value)}
-                    placeholder="Enter amount to transfer"
-                />
-            </div>
-            <button onClick={handleTransfer}>Send</button>
-            <button onClick={onCancel}>Cancel</button>
+            <br />
+            <center>
+                <table>
+                    <tr>
+                        <th>Account Number</th>
+                        <td>
+                            <input
+                                type="text"
+                                value={accountNumber}
+                                onChange={e => setAccountNumber(e.target.value)}
+                                placeholder="Enter recipient's account number"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Amount</th>
+                        <td>
+                            <input
+                                type="number"
+                                value={amount}
+                                onChange={e => setAmount(e.target.value)}
+                                placeholder="Enter amount to transfer"
+                            />
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                <button className='send-funds' onClick={handleTransfer}>Send</button>
+                <button className='cancel-transfer' onClick={onCancel}>Cancel</button>
+            </center>
         </div>
     );
 }

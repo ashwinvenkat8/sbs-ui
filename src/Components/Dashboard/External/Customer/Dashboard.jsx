@@ -8,7 +8,7 @@ import { useAuth } from '../../../Auth/AuthProvider';
 import { NewPayment } from './NewPayment';
 import '../External.css';
 
-const UserDashboard = () => {
+const CustomerDashboard = () => {
     const navigate = useNavigate();
     const { handleLogout } = useAuth();
     const [currentView, setCurrentView] = useState('Dashboard');
@@ -106,4 +106,4 @@ const UserDashboard = () => {
     );
 };
 
-export default UserDashboard;
+export default CustomerDashboard;
