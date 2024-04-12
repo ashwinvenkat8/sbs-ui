@@ -6,7 +6,7 @@ import { TransactionHistory } from './TransactionHistory';
 import { RequestPayments } from './RequestPayments';
 import { ReviewRequests } from './ReviewRequests';
 import { useAuth } from '../../../Auth/AuthProvider';
-
+import '../External.css';
 
 const MerchantDashboard = () => {
     const navigate = useNavigate();
@@ -14,6 +14,7 @@ const MerchantDashboard = () => {
     const [currentView, setCurrentView] = useState('Dashboard');
     const [accountDetails, setAccountDetails] = useState({});
     const [userDetails, setUserDetails] = useState({});
+    const [userAttributes, setUserAttributes] = useState({});
 
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -38,6 +39,7 @@ const MerchantDashboard = () => {
                 
                 setAccountDetails(accountData);
                 setUserDetails(userData);
+                setUserAttributes(userData.attributes);
             
             } catch (error) {
                 console.error('Error fetching user details:', error);
@@ -49,6 +51,12 @@ const MerchantDashboard = () => {
     }, [navigate]);
 
     const renderContent = () => {
+        const welcomeMessage = userAttributes.first_name ? `Welcome, ${userAttributes.first_name}`: 'Welcome';
+        const lastLogin = new Date(userDetails.last_login).toLocaleString('en-US', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+            hour: 'numeric', minute: 'numeric', timeZoneName: 'short', hour12: true
+        });
+
         switch (currentView) {
             case 'Profile':
                 return <Profile />;
@@ -60,9 +68,23 @@ const MerchantDashboard = () => {
                 return <ReviewRequests userDetails={userDetails} onCancel={() => setCurrentView('ReviewRequests')} />;
             default:
                 return (
-                    <div>
-                        <h2>Welcome, {accountDetails.first_name || ''}!</h2>
-                        <h4>Current Balance: ${accountDetails.balance}</h4>
+                    <div className='welcome-message'>
+                        <center>
+                            <h1>{welcomeMessage}</h1>
+                            <p className='welcome-message'>
+                                Last Login: {lastLogin}
+                            </p>
+                            <br /><br />
+                            <div>
+                                <h3>Account Number</h3>
+                                <p className='user-details'>{accountDetails.accountNumber}</p>
+                            </div>
+                            <br /><br />
+                            <div>
+                                <h3>Current Balance</h3>
+                                <p className='user-details'>${accountDetails.balance}</p>
+                            </div>
+                        </center>
                     </div>
                 );
         }

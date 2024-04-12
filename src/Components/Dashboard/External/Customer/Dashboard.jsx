@@ -6,6 +6,7 @@ import { TransferFunds } from './TransferFunds';
 import { TransactionHistory } from './TransactionHistory';
 import { useAuth } from '../../../Auth/AuthProvider';
 import { NewPayment } from './NewPayment';
+import '../External.css';
 
 const UserDashboard = () => {
     const navigate = useNavigate();
@@ -51,6 +52,12 @@ const UserDashboard = () => {
     }, [navigate]);
 
     const renderContent = () => {
+        const welcomeMessage = userAttributes.first_name ? `Welcome, ${userAttributes.first_name}`: 'Welcome';
+        const lastLogin = new Date(userDetails.last_login).toLocaleString('en-US', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+            hour: 'numeric', minute: 'numeric', timeZoneName: 'short', hour12: true
+        });
+
         switch (currentView) {
             case 'Profile':
                 return <Profile />;
@@ -62,30 +69,21 @@ const UserDashboard = () => {
                 return <NewPayment userDetails={userDetails} onCancel={() => setCurrentView('Dashboard')} />;
             default:
                 return (
-                    <div style={{ margin: '1rem', padding: 0 }}>
+                    <div className='welcome-message'>
                         <center>
-                            <h1>Welcome, {userAttributes.first_name || ''}!</h1>
-                            <p style={{ margin: '1rem', padding: 0 }}>
-                                Last Login: {new Date(userDetails.last_login).toLocaleString('en-US', {
-                                    weekday: 'long',
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric',
-                                    hour: 'numeric',
-                                    minute: 'numeric',
-                                    timeZoneName: 'short',
-                                    hour12: true
-                                })}
+                            <h1>{welcomeMessage}</h1>
+                            <p className='welcome-message'>
+                                Last Login: {lastLogin}
                             </p>
                             <br /><br />
                             <div>
                                 <h3>Account Number</h3>
-                                <p style={{margin: '0.5rem', padding: 0}}>{accountDetails.accountNumber}</p>
+                                <p className='user-details'>{accountDetails.accountNumber}</p>
                             </div>
                             <br /><br />
                             <div>
                                 <h3>Current Balance</h3>
-                                <p style={{margin: '0.5rem', padding: 0}}>${accountDetails.balance}</p>
+                                <p className='user-details'>${accountDetails.balance}</p>
                             </div>
                         </center>
                     </div>
@@ -94,7 +92,7 @@ const UserDashboard = () => {
     };
 
     return (
-        <div className="user-dashboard">
+        <div className="customer-dashboard">
             <nav>
                 <button onClick={() => setCurrentView('Dashboard')}>Dashboard</button>
                 <button onClick={() => setCurrentView('Profile')}>Profile</button>
