@@ -44,12 +44,12 @@ const RegistrationForm = () => {
       return;
     }
 
-    if(/^[0-9]{9}$/.test(formData.ssn)) {
+    if(!/^[0-9]{9}$/.test(formData.ssn)) {
       setErrorMessage("SSN must be 9 digits");
       return;
     }
     
-    if(/^[0-9]{10}$/.test(formData.phoneNumber)) {
+    if(!/^[0-9]{10}$/.test(formData.phoneNumber)) {
       setErrorMessage("Phone number must be 10 digits");
       return;
     }
