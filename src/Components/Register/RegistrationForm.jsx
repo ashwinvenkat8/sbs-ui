@@ -200,7 +200,6 @@ const RegistrationForm = () => {
                 name="middleName"
                 value={formData.middleName}
                 onChange={handleChange}
-                required
               />
             </div>
             <div>
