@@ -1,42 +1,89 @@
-/* Reset the box sizing */
-
 .registration-container {
     display: flex;
-    background-color: #f4f7fa; /* Light gray background */
+    background-color: #f4f7fa;
     padding: 20px;
     margin: 25px;
     border-radius: 7px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.form-section {
+.registration-container .form-section {
     flex: 1;
     margin: 10px;
     padding: 20px;
-    background-color: #ffffff; /* White background for sections */
+    background-color: #ffffff;
     border-radius: 8px;
 }
-.form-section label::after {
+
+.registration-container .form-section label::after {
     content: ' *';
     color: red;
-  }
-.form-section h2 {
-    color: #4a90e2; /* ChatGPT blue for headings */
+}
+
+.registration-container .form-section h2 {
+    color: #4a90e2;
     margin-bottom: 20px;
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #333333; /* Dark gray for text */
+.registration-container .input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"],
-input[type="tel"],
-input[type="date"],
-select {
+.registration-container .input-group input {
+    flex-grow: 1;
+    padding-right: 60px;
+}
+
+.registration-container .input-group .toggle-visibility {
+    position: absolute;
+    right: 0;
+    padding: 8px 16px;
+    border: none;
+    background-color: #cccccc;
+    border-radius: 0 4px 4px 0;
+    color: #333333;
+}
+
+.registration-container .input-group .toggle-visibility:hover {
+    background-color: #bbbbbb;
+}
+
+.registration-container .error-message {
+    color: #f00;
+    margin: 10px 0;
+}
+
+.registration-container .submit-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.registration-container .submit-button:hover {
+    background-color: #357abd;
+}
+
+.registration-container label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333333;
+}
+
+.registration-container input[type="text"],
+.registration-container input[type="password"],
+.registration-container input[type="email"],
+.registration-container input[type="tel"],
+.registration-container input[type="date"],
+.registration-container select {
     width: 100%;
     padding: 8px;
     margin-bottom: 15px;
@@ -44,9 +91,9 @@ select {
     border-radius: 4px;
 }
 
-input[type="button"],
-button {
-    background-color: #4a90e2; /* ChatGPT blue for buttons */
+.registration-container input[type="button"],
+.registration-container button {
+    background-color: #4a90e2;
     color: white;
     padding: 8px 16px;
     border: none;
@@ -56,54 +103,7 @@ button {
     margin-bottom: 15px;
 }
 
-input[type="button"]:hover,
-button:hover {
-    background-color: #357abd; /* Darker blue on hover */
-}
-
-.input-group {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.input-group input {
-    flex-grow: 1;
-    padding-right: 60px; /* Add padding to prevent text from hiding behind the button */
-}
-
-.input-group .toggle-visibility {
-    position: absolute;
-    right: 0;
-    padding: 8px 16px;
-    border: none;
-    background-color: #cccccc;
-    border-radius: 0 4px 4px 0; /* Rounded corners on the right side of the button */
-    color: #333333;
-}
-
-.input-group .toggle-visibility:hover {
-    background-color: #bbbbbb;
-}
-
-.error-message {
-    color: #ff0000; /* Red for error messages */
-    margin: 10px 0;
-}
-
-.submit-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #4a90e2; /* ChatGPT blue for submit button */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-.submit-button:hover {
-    background-color: #357abd; /* Darker blue on hover */
+.registration-container input[type="button"]:hover,
+.registration-container button:hover {
+    background-color: #357abd;
 }

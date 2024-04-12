@@ -17,38 +17,32 @@ export const useAuth = () => {
         setIsLoggedIn(!!token);
         setUserRole(role);
         setUserId(userid);
-        console.log(userId);
     }, [userId]);
 
     const handleLogout = async () => {
-        // Send logout request to the backend
         try {
-            
-          const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `${localStorage.getItem('authToken')}`
                 }
             });
-            
-            if (response.ok) {
-                console.log('Logout successful');
-            } else {
-                console.error('Logout failed');
+
+            if (!response.ok) {
+                throw new Error('Logout failed');
             }
         } catch (error) {
             console.error('Error during logout:', error);
         }
-    
+
         // Clear local storage and update state
         localStorage.removeItem('authToken');
         setIsLoggedIn(false);
         setUserRole(null);
-        alert('You are being redirected to Home Page')
+        alert('You are being redirected to Home Page');
         navigate("/");
     };
-
 
     return { isLoggedIn, userRole, userId, handleLogout };
 };

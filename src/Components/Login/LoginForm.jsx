@@ -15,7 +15,6 @@ const LoginForm = () => {
   const [otp, setOtp] = useState("");
   const [isOtpRequired, setIsOtpRequired] = useState(false);
 
-  //password toggling
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -125,13 +124,12 @@ const LoginForm = () => {
 
   return (
     <div className="login-container">
-      <form
-        onSubmit={isOtpRequired ? handleOtpVerification : handleLoginSubmit}
-      >
-        <h2>Login</h2>
+      <form onSubmit={isOtpRequired ? handleOtpVerification : handleLoginSubmit}>
+        <h1>Login</h1>
+        <br />
         {!isOtpRequired && (
           <>
-            <div className="input-field">
+            <div>
               <label>Username</label>
               <input
                 type="text"
@@ -140,26 +138,24 @@ const LoginForm = () => {
                 required
               />
             </div>
-            <div className="input-field">
+            <div>
               <label>Password</label>
-              <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="toggle-password"
-              >
-                {showPassword ? "Hide" : "Show"}
-              </button>
+              <div className="input-group">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button type="button" onClick={togglePasswordVisibility} className="toggle-visibility">
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
             </div>
           </>
         )}
         {isOtpRequired && (
-          <div className="input-field">
+          <div>
             <label>OTP</label>
             <input
               type="text"
@@ -172,22 +168,24 @@ const LoginForm = () => {
 
         {errorMessage && <div className="error-message">{errorMessage}</div>}
 
-        <button type="submit" className="login-button">
-          {isOtpRequired ? "Verify OTP" : "Login"}
-        </button>
+        <center>
+          <button type="submit" className="login-button">
+            {isOtpRequired ? "Verify OTP" : "Login"}
+          </button>
+        </center>
+        <br />
         {!isOtpRequired && (
-          <div className="links">
-            <Link to="/register">New Registration</Link>
-            <Link to="/forgot-password">Forgot Password?</Link>
+          <div>
+            <center>
+              <Link className="link" to="/register">Register</Link>
+              <Link className="link" to="/forgot-password">Forgot Password</Link>
+            </center>
           </div>
         )}
-        <button
-          type="button"
-          onClick={() => navigate("/")}
-          className="form-footer-button"
-        >
-          Home
-        </button>
+        <br />
+        <center>
+          <Link className="link back" to="/">&lt; Go back</Link>
+        </center>
       </form>
     </div>
   );

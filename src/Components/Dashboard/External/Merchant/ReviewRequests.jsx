@@ -1,7 +1,6 @@
-// AddFunds.jsx
 import React, { useState } from 'react';
 
-export function Payments({ token, onCancel, onFundsAdded }) {
+export function ReviewRequests({ token, onCancel, onFundsAdded }) {
     const [amount, setAmount] = useState('');
 
     const handleAddFunds = async () => {
@@ -14,7 +13,7 @@ export function Payments({ token, onCancel, onFundsAdded }) {
             const response = await fetch(process.env.REACT_APP_API_URL + '/api/v1/user/addfunds', { // Your API endpoint to add funds
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': token,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { jwtDecode } from "jwt-decode";
 
 export function TransactionHistory() {
     const [transactions, setTransactions] = useState([]);
-    
 
     useEffect(() => {
         const fetchTransactions = async () => {
@@ -13,13 +11,11 @@ export function TransactionHistory() {
                     console.error('No auth token available');
                     return;
                 }
-                const decodedToken = jwtDecode(token);
-                const accountId = decodedToken.accountId;
 
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/transactions/myTxns/${accountId}`, {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/transaction/myTxns`, {
+                    method: 'GET',
                     headers: { 'Authorization': token }
-                });
-                
+                });                
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch transaction history');
@@ -27,14 +23,14 @@ export function TransactionHistory() {
 
                 const data = await response.json();
                 setTransactions(data.transactions);
-                console.log(data)
+
             } catch (error) {
                 console.error('Error fetching transaction history:', error);
             }
         };
 
         fetchTransactions();
-    }, []); // Empty dependency array means this effect runs once on mount
+    }, []);
 
     return (
         <div>

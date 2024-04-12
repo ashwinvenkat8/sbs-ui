@@ -10,7 +10,7 @@ export default function AdminProfile({ token }) {
         const fetchUserDetails = async () => {
             try {
                 const response = await fetch(process.env.REACT_APP_API_URL + '/api/v1/user/profile/YOUR_USER_ID', {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: { 'Authorization': token }
                 });
                 if (!response.ok) throw new Error('Failed to fetch user details');
                 const data = await response.json();
@@ -29,7 +29,7 @@ export default function AdminProfile({ token }) {
             const response = await fetch(process.env.REACT_APP_API_URL + '/api/v1/user/profile/YOUR_USER_ID' , {
                 method: 'PUT',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': token,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({

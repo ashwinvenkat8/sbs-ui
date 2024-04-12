@@ -9,22 +9,19 @@ export function Profile({ token }) {
     const [updatedAddress, setUpdatedAddress] = useState('');
     const [updatedPhoneNumber, setUpdatedPhoneNumber] = useState('');
     const [userId, setUserId] = useState(null);
-    const [accountId, setaccountId] =useState(null);
-   
-    // const { userId, userRole } = useAuth();
+    const [accountId, setAccountId] =useState(null);
 
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
                 const token = localStorage.getItem('authToken');
-                const decodeToken = jwtDecode(token);
-                const accountId = decodeToken.accountId;
+                const decodedToken = jwtDecode(token);
                 
-                setUserId(decodeToken.userId);
-                setaccountId(accountId);
+                setUserId(decodedToken.userId);
+                setAccountId(decodedToken.accountId);
                 
-                const response = await fetch(process.env.REACT_APP_API_URL + '/user/account/' + `${accountId}`, {
-                    headers: { 'Authorization': `${token}` }
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/user/account/${accountId}`, {
+                    headers: { 'Authorization': token }
                 });
                 
                 if (!response.ok) throw new Error('Failed to fetch user details');
@@ -42,15 +39,15 @@ export function Profile({ token }) {
             }
         };
         fetchUserDetails();
-    }, [token]); // Dependency array with token to re-fetch if the token changes
+    }, [accountId, token]);
 
     const handleUpdateDetails = async () => {
         
         try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/user/profile/' + `${userId}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/user/profile/${userId}`, {
                 method: 'PATCH',
                 headers: {
-                    'Authorization': `${token}`,
+                    'Authorization': token,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({

@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 
-export function RequestPayments({ token, onCancel }) {
-    // const [recipientName, setRecipientName] = useState('');
+export function RequestPayments({ onCancel }) {
     const [accountNumber, setAccountNumber] = useState(Number);
     const [amount, setAmount] = useState(Number);
-    // const [accountDetails, setAccountDetails] = useState({});
 
     const handleTransfer = async () => {
         try {
@@ -14,33 +12,31 @@ export function RequestPayments({ token, onCancel }) {
 
             const accountId = decodeToken.accountId;
 
-            const accountResponse = await fetch(process.env.REACT_APP_API_URL + '/user/account/' + `${accountId}`, {
-                headers: { 'Authorization': `${token}` }
+            const accountResponse = await fetch(`${process.env.REACT_APP_API_URL}/user/account/${accountId}`, {
+                headers: { 'Authorization': token }
             });
             if (!accountResponse.ok) throw new Error('Failed to fetch user details');
             
             const data = await accountResponse.json();
             
-            const fromAccountNumber = data.accountNumber;
+            setAccountNumber(data.accountNumber);
             
             // Assuming you have an API endpoint to handle fund transfers
-            const response = await fetch(process.env.REACT_APP_API_URL + '/transaction/pay/request', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/transaction/pay/request`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `${token}`,
+                    'Authorization': token,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    accountNumber,
-                    amount,
+                    accountNumber: accountNumber,
+                    amount: amount,
                 }),
             });
             if (!response.ok) throw new Error('Failed to request funds');
             const responseJson = await response.json();
             alert(responseJson.message);
-            // Clear form or handle success
         } catch (error) {
-            //console.error('Error transferring funds:', error);
             alert(error);
         }
     };

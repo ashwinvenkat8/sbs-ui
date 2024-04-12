@@ -10,8 +10,8 @@ const ListUsers = () => {
         // Function to fetch all users
         const fetchUsers = async () => {
             try {
-                const response = await fetch(process.env.REACT_APP_API_URL + '/profile/all/${userId}', {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/profile/all`, {
+                    headers: { 'Authorization': token }
                 });
                 const data = await response.json();
                 setUsers(data);
@@ -24,8 +24,8 @@ const ListUsers = () => {
 
     const fetchUserDetails = async (userId) => {
         try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/profile/all/' + `${userId}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/profile/all`, {
+                headers: { 'Authorization': token }
             });
             if (response.ok) {
                 const userDetails = await response.json();

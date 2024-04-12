@@ -14,8 +14,8 @@ export function TransferFunds({ token, onCancel }) {
 
             const accountId = decodeToken.accountId;
 
-            const accountResponse = await fetch(process.env.REACT_APP_API_URL + '/user/account/' + `${accountId}`, {
-                headers: { 'Authorization': `${token}` }
+            const accountResponse = await fetch(`${process.env.REACT_APP_API_URL}/user/account/${accountId}`, {
+                headers: { 'Authorization': token }
             });
             if (!accountResponse.ok) throw new Error('Failed to fetch user details');
             
@@ -23,11 +23,10 @@ export function TransferFunds({ token, onCancel }) {
             
             const fromAccountNumber = data.accountNumber;
             
-            // Assuming you have an API endpoint to handle fund transfers
-            const response = await fetch(process.env.REACT_APP_API_URL + '/transaction/new', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/transaction/new`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `${token}`,
+                    'Authorization': token,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({

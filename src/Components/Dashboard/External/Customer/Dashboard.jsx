@@ -1,75 +1,93 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
 import { Profile } from './Profile';
 import { TransferFunds } from './TransferFunds';
-import { jwtDecode } from "jwt-decode";
 import { TransactionHistory } from './TransactionHistory';
 import { useAuth } from '../../../Auth/AuthProvider';
-import { Payments } from './Payments';
-
+import { NewPayment } from './NewPayment';
 
 const UserDashboard = () => {
     const navigate = useNavigate();
     const { handleLogout } = useAuth();
-    const [currentView, setCurrentView] = useState('welcome');
+    const [currentView, setCurrentView] = useState('Dashboard');
     const [accountDetails, setAccountDetails] = useState({});
     const [userDetails, setUserDetails] = useState({});
+    const [userAttributes, setUserAttributes] = useState({});
 
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
                 const token = localStorage.getItem('authToken');
                 const decodeToken = jwtDecode(token);
-                if (!token) throw new Error('No token found');
-                
-                const userId = decodeToken.userId;
+
+                if (!token) throw new Error('JWT not found');
+
                 const accountId = decodeToken.accountId;
-                
-                
-                
-                // Assuming the backend endpoint `/user/details` expects a GET request
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/user/account/${accountId}`, {
                     method: 'GET',
                     headers: { 
-                        'Authorization': `${token}`
+                        'Authorization': token
                     }
                 });
 
                 if (!response.ok) throw new Error('Failed to fetch user details');
-                const account_data = await response.json();
-                const user_data = account_data.user;
-                setAccountDetails(account_data);
-                setUserDetails(user_data);
+
+                const accountData = await response.json();
+                const userData = accountData.user;
+
+                setAccountDetails(accountData);
+                setUserDetails(userData);
+                setUserAttributes(userData.attributes);
+
             } catch (error) {
-                console.error('Error fetching user details:', error);
-                navigate('/login'); // Redirect to login if fetching user details fails
+                console.error('Error fetching user details: ', error);
+                navigate('/login');
             }
         };
 
         fetchUserDetails();
+
     }, [navigate]);
 
     const renderContent = () => {
-        //const balance = userDetails.balance['$numberDecimal'];
-        console.log(userDetails.user)
-        
         switch (currentView) {
-            case 'profile':
+            case 'Profile':
                 return <Profile />;
-            case 'transactionHistory':
+            case 'TransactionHistory':
                 return <TransactionHistory userDetails={userDetails} />;
-            case 'transferFunds':
-                return <TransferFunds userDetails={userDetails} onCancel={() => setCurrentView('dashboard')} />;
-            case 'payments':
-                return <Payments userDetails={userDetails} onCancel={() => setCurrentView('welcome')} />;
+            case 'TransferFunds':
+                return <TransferFunds userDetails={userDetails} onCancel={() => setCurrentView('Dashboard')} />;
+            case 'NewPayment':
+                return <NewPayment userDetails={userDetails} onCancel={() => setCurrentView('Dashboard')} />;
             default:
                 return (
-                    <div>
-                        <h2>Welcome, {userDetails.username || 'User'}!</h2>
-                        <p>Current Balance:{accountDetails.balance}</p>
-                        {/* Display other user details as needed */}
+                    <div style={{ margin: '1rem', padding: 0 }}>
+                        <center>
+                            <h1>Welcome, {userAttributes.first_name || ''}!</h1>
+                            <p style={{ margin: '1rem', padding: 0 }}>
+                                Last Login: {new Date(userDetails.last_login).toLocaleString('en-US', {
+                                    weekday: 'long',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    hour: 'numeric',
+                                    minute: 'numeric',
+                                    timeZoneName: 'short',
+                                    hour12: true
+                                })}
+                            </p>
+                            <br /><br />
+                            <div>
+                                <h3>Account Number</h3>
+                                <p style={{margin: '0.5rem', padding: 0}}>{accountDetails.accountNumber}</p>
+                            </div>
+                            <br /><br />
+                            <div>
+                                <h3>Current Balance</h3>
+                                <p style={{margin: '0.5rem', padding: 0}}>${accountDetails.balance}</p>
+                            </div>
+                        </center>
                     </div>
                 );
         }
@@ -78,12 +96,11 @@ const UserDashboard = () => {
     return (
         <div className="user-dashboard">
             <nav>
-                <button onClick={() => setCurrentView('welcome')}>Home</button>
-                <button onClick={() => setCurrentView('profile')}>Profile</button>
-                <button onClick={() => setCurrentView('transactionHistory')}>Transaction History</button>
-                <button onClick={() => setCurrentView('transferFunds')}>Transfer Funds</button>
-                <button onClick={() => setCurrentView('payments')}>New payments</button>
-                {/* <button onClick={() => setCurrentView('addFunds')}>Review Requests</button> */}
+                <button onClick={() => setCurrentView('Dashboard')}>Dashboard</button>
+                <button onClick={() => setCurrentView('Profile')}>Profile</button>
+                <button onClick={() => setCurrentView('TransactionHistory')}>Transaction History</button>
+                <button onClick={() => setCurrentView('TransferFunds')}>Transfer Funds</button>
+                <button onClick={() => setCurrentView('NewPayment')}>New Payment</button>
                 <button onClick={handleLogout}>Logout</button>
             </nav>
             {renderContent()}
@@ -92,4 +109,3 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
-

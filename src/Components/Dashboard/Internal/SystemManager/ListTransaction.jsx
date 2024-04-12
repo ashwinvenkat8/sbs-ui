@@ -3,17 +3,17 @@ import React, { useState, useEffect } from 'react';
 const ListTransactions = () => {
     const [users, setUsers] = useState([]);
     const [selectedUserDetails, setSelectedUserDetails] = useState(null);
-    const token = localStorage.getItem('authToken'); // Assuming the token is stored in localStorage
+    const token = localStorage.getItem('authToken');
 
     useEffect(() => {
         // Function to fetch all transactions
         const fetchUsers = async () => {
             try {
-                const response = await fetch(process.env.REACT_APP_API_URL + '/profile/all/${userId}', {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/profile/all`, {
+                    headers: { 'Authorization': token }
                 });
                 const data = await response.json();
-                setUsers(data); // Assuming the response is the array of users
+                setUsers(data);
             } catch (error) {
                 console.error('Failed to fetch users:', error);
             }
@@ -23,12 +23,11 @@ const ListTransactions = () => {
 
     const fetchUserDetails = async (userId) => {
         try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/profile/all/' + `${userId}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/profile/${userId}`, {
+                headers: { 'Authorization': token }
             });
             if (response.ok) {
-                const userDetails = await response.json();
-                setSelectedUserDetails(userDetails);
+                setSelectedUserDetails(await response.json());
             } else {
                 console.error('Failed to fetch user details');
             }

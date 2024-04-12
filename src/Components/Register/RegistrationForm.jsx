@@ -161,7 +161,7 @@ const RegistrationForm = () => {
         <h2>Registration</h2>
         {!showOTPEnrollment && (
           <>
-            <div className="input-field">
+            <div>
               <label>First Name</label>
               <input
                 type="text"
@@ -171,7 +171,7 @@ const RegistrationForm = () => {
                 required
               />
             </div>
-            <div className="input-field">
+            <div>
               <label>Last Name</label>
               <input
                 type="text"
@@ -181,7 +181,7 @@ const RegistrationForm = () => {
                 required
               />
             </div>
-            <div className="input-field">
+            <div>
               <label>Gender</label>
               <select
                 name="gender"
@@ -195,7 +195,7 @@ const RegistrationForm = () => {
                 <option value="other">Other</option>
               </select>
             </div>
-            <div className="input-field">
+            <div>
               <label>Date of Birth</label>
               <input
                 type="date"
@@ -205,7 +205,7 @@ const RegistrationForm = () => {
                 required
               />
             </div>
-            <div className="input-field">
+            <div>
               <label>SSN (Social Security Number)</label>
               <div className="input-group">
                 <input
@@ -219,13 +219,13 @@ const RegistrationForm = () => {
                 <button
                   type="button"
                   onClick={toggleSSNVisibility}
-                  className="toggle-password"
+                  className=""
                 >
                   {showSSN ? "Hide" : "Show"}
                 </button>
               </div>
             </div>
-            <div className="input-field">
+            <div>
               <label>Phone Number</label>
               <input
                 type="tel"
@@ -235,7 +235,7 @@ const RegistrationForm = () => {
                 required
               />
             </div>
-            <div className="input-field">
+            <div>
               <label>Address</label>
               <input
                 type="text"
@@ -245,7 +245,7 @@ const RegistrationForm = () => {
                 required
               />
             </div>
-            <div className="input-field">
+            <div>
               <label>User Type</label>
               <select
                 name="userRole"
@@ -258,7 +258,7 @@ const RegistrationForm = () => {
                 <option value="MERCHANT">Merchant</option>
               </select>
             </div>
-            <div className="input-field">
+            <div>
               <label>Email</label>
               <input
                 type="email"
@@ -268,7 +268,7 @@ const RegistrationForm = () => {
                 required
               />
             </div>
-            <div className="input-field">
+            <div>
               <label>Username</label>
               <input
                 type="text"
@@ -279,7 +279,7 @@ const RegistrationForm = () => {
                 minLength="6"
               />
             </div>
-            <div className="input-field">
+            <div>
               <label>Password</label>
               <input
                 type="password"
@@ -290,7 +290,7 @@ const RegistrationForm = () => {
                 minLength="7"
               />
             </div>
-            <div className="input-field">
+            <div>
               <label>Confirm Password</label>
               <div className="input-group">
                 <input
@@ -303,7 +303,7 @@ const RegistrationForm = () => {
                 <button
                   type="button"
                   onClick={toggleConfirmPasswordVisibility}
-                  className="toggle-password"
+                  className=""
                 >
                   {showConfirmPassword ? "Hide" : "Show"}
                 </button>
@@ -312,7 +312,7 @@ const RegistrationForm = () => {
           </>
         )}
         {showOTPEnrollment && (
-          <div className="input-field">
+          <div>
             <label>Please scan QR Code on Google Authenticator</label>
             <img src={qrCodeURL} alt="qrcode url" />
             <label>OTP</label>
