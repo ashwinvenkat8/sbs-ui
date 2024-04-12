@@ -1,109 +1,104 @@
-.registration-container {
+.register-container {
     display: flex;
-    background-color: #f4f7fa;
-    padding: 20px;
-    margin: 25px;
+    flex: 0 1 auto;
+    flex-direction: column;
+    justify-content: center;
+    margin: 2rem;
+    padding: 2rem;
+    width: 35vw;
+    background-color: #fff;
     border-radius: 7px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.registration-container .form-section {
-    flex: 1;
-    margin: 10px;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
+.register-container label {
+    display: block;
+    margin: 1rem 0;
+    color: #005;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
 }
 
-.registration-container .form-section label::after {
+.register-container .form-section label::after {
     content: ' *';
     color: red;
 }
 
-.registration-container .form-section h2 {
-    color: #4a90e2;
-    margin-bottom: 20px;
+.register-container .form-section h1, h2 {
+    color: #005;
+    text-align: center;
 }
 
-.registration-container .input-group {
+.register-container .input-group {
     position: relative;
     display: flex;
     align-items: center;
 }
 
-.registration-container .input-group input {
-    flex-grow: 1;
-    padding-right: 60px;
-}
-
-.registration-container .input-group .toggle-visibility {
+.register-container .input-group .toggle-visibility {
     position: absolute;
     right: 0;
-    padding: 8px 16px;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+    width: 5rem;
     border: none;
-    background-color: #cccccc;
-    border-radius: 0 4px 4px 0;
-    color: #333333;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 450;
+    background-color: unset;
 }
 
-.registration-container .input-group .toggle-visibility:hover {
-    background-color: #bbbbbb;
-}
-
-.registration-container .error-message {
+.register-container .error-message {
     color: #f00;
-    margin: 10px 0;
+    margin: 1rem 0;
 }
 
-.registration-container .submit-button {
-    display: block;
+.register-container input[type="text"],
+.register-container input[type="password"],
+.register-container input[type="email"],
+.register-container input[type="tel"],
+.register-container input[type="date"],
+.register-container select {
     width: 100%;
-    padding: 10px;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-.registration-container .submit-button:hover {
-    background-color: #357abd;
-}
-
-.registration-container label {
-    display: block;
-    margin-bottom: 5px;
-    color: #333333;
-}
-
-.registration-container input[type="text"],
-.registration-container input[type="password"],
-.registration-container input[type="email"],
-.registration-container input[type="tel"],
-.registration-container input[type="date"],
-.registration-container select {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #cccccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
     border-radius: 4px;
 }
 
-.registration-container input[type="button"],
-.registration-container button {
-    background-color: #4a90e2;
-    color: white;
-    padding: 8px 16px;
+.register-container .register-button {
+    display: inline-block;
+    width: max-content;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+    font-weight: 450;
+    background-color: #eee;
+    color: #005;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 0px;
-    margin-bottom: 15px;
+    text-align: center;
 }
 
-.registration-container input[type="button"]:hover,
-.registration-container button:hover {
-    background-color: #357abd;
+.register-container .register-button:hover {
+    color: #fff;
+    background-color: #005;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.register-container .link {
+    margin: 0.5rem;
+    color: #005;
+    font-weight: 450;
+    text-decoration: none;
+}
+
+.register-container .link:hover {
+    text-decoration: underline;
+}
+
+.register-container .home {
+    color: #666;
 }

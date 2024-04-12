@@ -151,14 +151,14 @@ const RegistrationForm = () => {
     setShowConfirmPassword(!showConfirmPassword);
 
   return (
-    <div className="registration-container">
+    <div className="register-container">
       <form
         className="form-section"
         onSubmit={
           showOTPEnrollment ? handleOTPEnrollment : submitRegistrationForm
         }
       >
-        <h2>Registration</h2>
+        <h1>Register</h1>
         {!showOTPEnrollment && (
           <>
             <div>
@@ -219,7 +219,7 @@ const RegistrationForm = () => {
                 <button
                   type="button"
                   onClick={toggleSSNVisibility}
-                  className=""
+                  className="toggle-visibility"
                 >
                   {showSSN ? "Hide" : "Show"}
                 </button>
@@ -303,7 +303,7 @@ const RegistrationForm = () => {
                 <button
                   type="button"
                   onClick={toggleConfirmPasswordVisibility}
-                  className=""
+                  className="toggle-visibility"
                 >
                   {showConfirmPassword ? "Hide" : "Show"}
                 </button>
@@ -328,21 +328,19 @@ const RegistrationForm = () => {
 
         {errorMessage && <div className="error-message">{errorMessage}</div>}
 
-        <button type="submit" className="login-button">
-          {showOTPEnrollment ? "Verify OTP" : "Register"}
-        </button>
+        <center>
+          <button type="submit" className="register-button">
+            {showOTPEnrollment ? "Verify OTP" : "Register"}
+          </button>
+        </center>
+        <br />
         {!showOTPEnrollment && (
-          <div className="links">
-            <Link to="/login">Already have an account? Login</Link>
+          <div>
+            <center><Link className="link" to="/login">Already have an account? Login</Link></center>
           </div>
         )}
-        <button
-          type="button"
-          onClick={() => navigate("/")}
-          className="form-footer-button"
-        >
-          Home
-        </button>
+        <br />
+        <center><Link className="link home" to="/">&lt; Home</Link></center>
       </form>
     </div>
   );

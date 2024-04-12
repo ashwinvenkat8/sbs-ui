@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import DOMPurify from "dompurify";
-
 import "./Login.css";
 
 const LoginForm = () => {
@@ -184,7 +183,7 @@ const LoginForm = () => {
         )}
         <br />
         <center>
-          <Link className="link back" to="/">&lt; Go back</Link>
+          <Link className="link home" to="/">&lt; Home</Link>
         </center>
       </form>
     </div>

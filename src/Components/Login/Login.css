@@ -25,6 +25,11 @@
     text-align: center;
 }
 
+.login-container label::after {
+    content: ' *';
+    color: red;
+}
+
 .login-container input[type="text"],
 .login-container input[type="password"] {
     width: 100%;
@@ -90,6 +95,6 @@
     text-decoration: underline;
 }
 
-.login-container .back {
+.login-container .home {
     color: #666;
 }
