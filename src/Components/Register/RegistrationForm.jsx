@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import DOMPurify from "dompurify";
 import QRCode from "qrcode";
-import { sha256 } from "js-sha256";
 import "./Registration.css";
 
 const RegistrationForm = () => {
@@ -58,10 +57,12 @@ const RegistrationForm = () => {
       return;
     }
 
+    const passwordHash = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-512", new TextEncoder().encode(formData.confirmPassword)))).map((b) => b.toString(16).padStart(2, "0")).join("");
+
     const userData = {
       username: DOMPurify.sanitize(formData.username),
       email: DOMPurify.sanitize(formData.email),
-      password: sha256(formData.password),
+      password: passwordHash,
       first_name: DOMPurify.sanitize(formData.firstName),
       last_name: DOMPurify.sanitize(formData.lastName),
       date_of_birth: DOMPurify.sanitize(formData.dateOfBirth),
@@ -74,7 +75,7 @@ const RegistrationForm = () => {
 
     try {
       const registrationResponse = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/auth/register",
+        process.env.REACT_APP_API_URL + "/auth/register",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -96,7 +97,7 @@ const RegistrationForm = () => {
       setShowOTPEnrollment(true);
 
       const qrResponse = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/auth/otp/enroll`,
+        `${process.env.REACT_APP_API_URL}/auth/otp/enroll`,
         {
           method: "GET",
           headers: {
@@ -120,7 +121,7 @@ const RegistrationForm = () => {
 
     try {
       const otpResponse = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/auth/otp/verify`,
+        `${process.env.REACT_APP_API_URL}/auth/otp/verify`,
         {
           method: "POST",
           headers: {

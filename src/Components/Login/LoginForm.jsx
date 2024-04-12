@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import DOMPurify from "dompurify";
-import bcrypt from "bcryptjs-react";
 
 import "./Login.css";
-import { sha256 } from "js-sha256";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -50,10 +48,10 @@ const LoginForm = () => {
     try {
       const sanitizedUsername = DOMPurify.sanitize(username);
 
-      const passwordHash = sha256(password);
+      const passwordHash = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-512", new TextEncoder().encode(password)))).map((b) => b.toString(16).padStart(2, "0")).join("");
 
       const loginResponse = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/auth/login`,
+        `${process.env.REACT_APP_API_URL}/auth/login`,
         {
           method: "POST",
           headers: {
@@ -61,7 +59,7 @@ const LoginForm = () => {
           },
           body: JSON.stringify({
             username: sanitizedUsername,
-            passwordHash,
+            password: passwordHash,
           }),
         }
       );
@@ -81,7 +79,7 @@ const LoginForm = () => {
 
     try {
       const otpResponse = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/auth/otp/validate`,
+        `${process.env.REACT_APP_API_URL}/auth/otp/validate`,
         {
           method: "POST",
           headers: {
