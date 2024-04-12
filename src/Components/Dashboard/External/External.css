@@ -14,7 +14,7 @@
     margin: 0 0.5rem;
     color: #fff;
     background-color: #005;
-    border: none;
+    border: 1px solid #005;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.9rem;
@@ -25,7 +25,11 @@
     background-color: #fff;
     color: #005;
     transition: 0.2s;
-    font-weight: 450;
+}
+
+.customer-dashboard .logout:hover {
+    border: 1px solid #e00;
+    color: #e00;
 }
 
 .customer-dashboard .welcome-message {
@@ -36,4 +40,40 @@
 .customer-dashboard .user-details {
     margin: 1rem;
     padding: 0;
+}
+
+.transaction-history table {
+    table-layout: fixed;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-history table tr th, td {
+    padding: 0.5rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.profile table {
+    table-layout: fixed;
+    width: max-content;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile table tr th, td {
+    padding: 0.5rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.profile .edit-profile:hover {
+    border: 1px solid #e70;
+    color: #e70;
+}
+
+.profile input[type="text"],
+.profile input[type="tel"] {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
 }

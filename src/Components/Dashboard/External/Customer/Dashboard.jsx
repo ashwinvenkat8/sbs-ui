@@ -99,7 +99,7 @@ const UserDashboard = () => {
                 <button onClick={() => setCurrentView('TransactionHistory')}>Transaction History</button>
                 <button onClick={() => setCurrentView('TransferFunds')}>Transfer Funds</button>
                 <button onClick={() => setCurrentView('NewPayment')}>New Payment</button>
-                <button onClick={handleLogout}>Logout</button>
+                <button className='logout' onClick={handleLogout}>Logout</button>
             </nav>
             {renderContent()}
         </div>

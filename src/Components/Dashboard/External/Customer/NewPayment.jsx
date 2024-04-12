@@ -24,7 +24,9 @@ export function NewPayment({ token, onCancel, onFundsAdded }) {
 
             if (!response.ok) throw new Error('Failed to add funds');
             const result = await response.json();
+            
             alert(`Funds added successfully! New balance: ${result.newBalance}`);
+            
             onFundsAdded(result.newBalance);
             setAmount('');
         } catch (error) {

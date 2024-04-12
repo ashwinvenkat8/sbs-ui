@@ -10,8 +10,7 @@ export function Profile({ token }) {
     const [updatedPhoneNumber, setUpdatedPhoneNumber] = useState('');
     const [updateEmail, setUpdateEmail] = useState('');
     const [userId, setUserId] = useState(null);
-    const [accountId, setAccountId] =useState(null);
-   
+
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
@@ -19,9 +18,8 @@ export function Profile({ token }) {
                 const decodedToken = jwtDecode(token);
 
                 setUserId(decodedToken.userId);
-                setAccountId(decodedToken.accountId);
-                
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/user/account/${accountId}`, {
+
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/user/account/${decodedToken.accountId}`, {
                     headers: { 'Authorization': token }
                 });
 
@@ -40,7 +38,7 @@ export function Profile({ token }) {
             }
         };
         fetchUserDetails();
-    }, [accountId, token]);
+    }, [token]);
 
     const handleUpdateDetails = async () => {
         try {
@@ -68,36 +66,92 @@ export function Profile({ token }) {
     };
 
     return (
-        <div>
-            <h2>User Profile</h2>
+        <div className='profile'>
             {!editMode ? (
-                <div>
-                    <p>Username: {userDetails.username}</p>
-                    <p>Email: {userDetails.email}</p>
-                    <p>First Name: {userAttributes.first_name}</p>
-                    <p>Middle Name: {userAttributes.middle_name}</p>
-                    <p>Last Name: {userAttributes.last_name}</p>
-                    <p>Date of Birth: {userAttributes.date_of_birth}</p>
-                    <p>Gender: {userAttributes.gender}</p>
-                    <p>SSN: {userAttributes.ssn}</p>
-                    <p>Address: {userAttributes.address}</p>
-                    <p>Phone Number: {userAttributes.phone_number}</p>
-                    <p>Role: {userDetails.role}</p>
-                    <p>Account Number: {accountDetails.accountNumber}</p> 
-                    <button onClick={() => setEditMode(true)}>Edit</button>
-                </div>
+                <center>
+                    <h2>User Profile</h2>
+                    <br />
+                    <table>
+                        <tr>
+                            <th>Username</th>
+                            <td>{userDetails.username}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{userDetails.email}</td>
+                        </tr>
+                        <tr>
+                            <th>First Name</th>
+                            <td>{userAttributes.first_name}</td>
+                        </tr>
+                        <tr>
+                            <th>Middle Name</th>
+                            <td>{userAttributes.middle_name || '-'}</td>
+                        </tr>
+                        <tr>
+                            <th>Last Name</th>
+                            <td>{userAttributes.last_name}</td>
+                        </tr>
+                        <tr>
+                            <th>Date of Birth</th>
+                            <td>{userAttributes.date_of_birth}</td>
+                        </tr>
+                        <tr>
+                            <th>Gender</th>
+                            <td>{userAttributes.gender}</td>
+                        </tr>
+                        <tr>
+                            <th>SSN</th>
+                            <td>{userAttributes.ssn}</td>
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <td>{userAttributes.address}</td>
+                        </tr>
+                        <tr>
+                            <th>Phone Number</th>
+                            <td>{userAttributes.phone_number}</td>
+                        </tr>
+                        <tr>
+                            <th>Role</th>
+                            <td>{userDetails.role}</td>
+                        </tr>
+                        <tr>
+                            <th>Account Number</th>
+                            <td>{accountDetails.accountNumber}</td>
+                        </tr>
+                    </table>
+                    <br />
+                    <button className='edit-profile' onClick={() => setEditMode(true)}>Edit</button>
+                </center>
             ) : (
-                <div>
+                <center>
                     <h2>Edit Profile</h2>
-                    <label>Address:</label>
-                    <input type="text" value={updatedAddress} onChange={e => setUpdatedAddress(e.target.value)} />
-                    <label>Phone Number:</label>
-                    <input type="number" value={updatedPhoneNumber} onChange={e => setUpdatedPhoneNumber(e.target.value)} />
-                    <label>Email:</label>
-                    <input type="text" value={updateEmail} onChange={e => setUpdateEmail(e.target.value)} />
+                    <br />
+                    <table>
+                        <tr>
+                            <th>Address</th>
+                            <td>
+                                <input type="text" value={updatedAddress} onChange={e => setUpdatedAddress(e.target.value)} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Phone Number</th>
+                            <td>
+                                <input type="tel" value={updatedPhoneNumber} onChange={e => setUpdatedPhoneNumber(e.target.value)} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>
+                                <input type="text" value={updateEmail} onChange={e => setUpdateEmail(e.target.value)} />
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
                     <button onClick={handleUpdateDetails}>Save</button>
                     <button onClick={() => setEditMode(false)}>Cancel</button>
-                </div>
+                </center>
             )}
         </div>
     );

@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 
 export function TransferFunds({ token, onCancel }) {
-    // const [recipientName, setRecipientName] = useState('');
     const [accountNumber, setAccountNumber] = useState(Number);
     const [amount, setAmount] = useState(Number);
-    // const [accountDetails, setAccountDetails] = useState({});
 
     const handleTransfer = async () => {
         try {
@@ -38,7 +36,7 @@ export function TransferFunds({ token, onCancel }) {
             if (!response.ok) throw new Error('Failed to transfer funds');
             const responseJson = await response.json();
             alert(responseJson.message);
-            // Clear form or handle success
+
         } catch (error) {
             console.error('Error transferring funds:', error);
             alert('Error transferring funds. Please try again.');
@@ -48,7 +46,6 @@ export function TransferFunds({ token, onCancel }) {
     return (
         <div>
             <h2>Transfer Funds</h2>
-
             <div>
                 <label>Account Number:</label>
                 <input

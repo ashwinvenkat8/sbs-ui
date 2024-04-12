@@ -17,7 +17,7 @@ export const useAuth = () => {
         setIsLoggedIn(!!token);
         setUserRole(role);
         setUserId(userid);
-    }, [userId]);
+    }, [isLoggedIn, userId]);
 
     const handleLogout = async () => {
         try {

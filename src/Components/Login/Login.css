@@ -11,7 +11,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.login-container form h1, h2 {
+.login-container h1, h2 {
     color: #005;
     text-align: center;
 }
@@ -66,21 +66,21 @@
 .login-container .login-button {
     display: inline-block;
     width: max-content;
-    margin: 0.5rem;
-    padding: 0.5rem;
+    margin: 1rem;
+    padding: 0.8rem;
     font-size: 1rem;
     font-weight: 450;
-    background-color: #eee;
-    color: #005;
-    border: none;
+    background-color: #005;
+    color: #eee;
+    border: 1px solid #005;
     border-radius: 4px;
     cursor: pointer;
     text-align: center;
 }
 
 .login-container .login-button:hover {
-    color: #fff;
-    background-color: #005;
+    color: #005;
+    background-color: #eee;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -97,4 +97,8 @@
 
 .login-container .home {
     color: #666;
+}
+
+.login-container .home:hover {
+    color: #005;
 }

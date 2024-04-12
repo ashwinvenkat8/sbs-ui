@@ -39,16 +39,35 @@ const RegistrationForm = () => {
   const submitRegistrationForm = async (e) => {
     e.preventDefault();
 
+    if(Date.parse(formData.dateOfBirth) >= Date.now()) {
+      setErrorMessage("Date of birth must be in the past");
+      return;
+    }
+
+    if(/^[0-9]{9}$/.test(formData.ssn)) {
+      setErrorMessage("SSN must be 9 digits");
+      return;
+    }
+    
+    if(/^[0-9]{10}$/.test(formData.phoneNumber)) {
+      setErrorMessage("Phone number must be 10 digits");
+      return;
+    }
+
     const alphanumericRegex = /^[a-zA-Z0-9]+$/;
     if (!alphanumericRegex.test(formData.username)) {
-      setErrorMessage("Please make sure the username is Alphanumeric");
+      setErrorMessage("Please make sure the username is alphanumeric");
+      return;
+    }
+
+    const passwordBlacklist = [formData.username, formData.firstName, formData.middleName, formData.lastName, formData.ssn, formData.phoneNumber];
+    if (passwordBlacklist.join("").includes(formData.password)) {
+      setErrorMessage("Your password must not contain any part of your personal information");
       return;
     }
 
     if (formData.password.length < 12) {
-      setErrorMessage(
-        "The password length is too small, please keep the length at least 12"
-      );
+      setErrorMessage("Minimum password length is 12 characters");
       return;
     }
 
@@ -64,6 +83,7 @@ const RegistrationForm = () => {
       email: DOMPurify.sanitize(formData.email),
       password: passwordHash,
       first_name: DOMPurify.sanitize(formData.firstName),
+      middle_name: DOMPurify.sanitize(formData.middleName),
       last_name: DOMPurify.sanitize(formData.lastName),
       date_of_birth: DOMPurify.sanitize(formData.dateOfBirth),
       gender: DOMPurify.sanitize(formData.gender),
@@ -152,13 +172,15 @@ const RegistrationForm = () => {
 
   return (
     <div className="register-container">
+      <center><img src="logo512.png" alt="The logo of EasyBank, which is the name itself in Wavefont" /></center>
+      <h1>Register</h1>
+      <br />
       <form
         className="form-section"
         onSubmit={
           showOTPEnrollment ? handleOTPEnrollment : submitRegistrationForm
         }
       >
-        <h1>Register</h1>
         {!showOTPEnrollment && (
           <>
             <div>
@@ -167,6 +189,16 @@ const RegistrationForm = () => {
                 type="text"
                 name="firstName"
                 value={formData.firstName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label>Middle Name</label>
+              <input
+                type="text"
+                name="middleName"
+                value={formData.middleName}
                 onChange={handleChange}
                 required
               />
@@ -190,9 +222,9 @@ const RegistrationForm = () => {
                 required
               >
                 <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Non-binary">Non-binary</option>
               </select>
             </div>
             <div>
@@ -202,8 +234,22 @@ const RegistrationForm = () => {
                 name="dateOfBirth"
                 value={formData.dateOfBirth}
                 onChange={handleChange}
+                max={new Date().toISOString().split("T")[0]}
                 required
               />
+            </div>
+            <div>
+              <label>User Type</label>
+              <select
+                name="userRole"
+                value={formData.userRole}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select User Type</option>
+                <option value="CUSTOMER">Customer</option>
+                <option value="MERCHANT">Merchant</option>
+              </select>
             </div>
             <div>
               <label>SSN (Social Security Number)</label>
@@ -213,6 +259,7 @@ const RegistrationForm = () => {
                   name="ssn"
                   value={formData.ssn}
                   onChange={handleChange}
+                  minLength="9"
                   maxLength="9"
                   required
                 />
@@ -246,19 +293,6 @@ const RegistrationForm = () => {
               />
             </div>
             <div>
-              <label>User Type</label>
-              <select
-                name="userRole"
-                value={formData.userRole}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select User Type</option>
-                <option value="CUSTOMER">Customer</option>
-                <option value="MERCHANT">Merchant</option>
-              </select>
-            </div>
-            <div>
               <label>Email</label>
               <input
                 type="email"
@@ -286,8 +320,8 @@ const RegistrationForm = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                minLength="12"
                 required
-                minLength="7"
               />
             </div>
             <div>
@@ -298,6 +332,7 @@ const RegistrationForm = () => {
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
+                  minLength="12"
                   required
                 />
                 <button
@@ -325,9 +360,8 @@ const RegistrationForm = () => {
             />
           </div>
         )}
-
         {errorMessage && <div className="error-message">{errorMessage}</div>}
-
+        <br />
         <center>
           <button type="submit" className="register-button">
             {showOTPEnrollment ? "Verify OTP" : "Register"}

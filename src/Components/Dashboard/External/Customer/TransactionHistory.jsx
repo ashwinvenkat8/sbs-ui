@@ -33,20 +33,27 @@ export function TransactionHistory() {
     }, []);
 
     return (
-        <div>
+        <div className='transaction-history'>
             <h2>Transaction History</h2>
-            <ul>
+            <br />
+            <table>
+                <tr>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Amount</th>
+                </tr>
                 {transactions.length > 0 ? (
                     transactions.map((transaction, index) => (
-                        <li key={index}>
-                            From: {transaction.from} - To: {transaction.to} - Amount: {transaction.amount}
-                        </li>
+                        <tr key={index}>
+                            <td>{transaction.from}</td>
+                            <td>{transaction.to}</td>
+                            <td>{transaction.amount}</td>
+                        </tr>
                     ))
                 ) : (
-                    <p>No transactions found.</p>
+                    <p>No transactions found</p>
                 )}
-            </ul>
+            </table>
         </div>
     );
 }
-
