@@ -17,9 +17,9 @@ export function TransactionHistory() {
                     headers: { 'Authorization': token }
                 });                
 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch transaction history');
-                }
+        if (!response.ok) {
+          throw new Error("Failed to fetch transaction history");
+        }
 
                 const data = await response.json();
                 setTransactions(data.transactions);

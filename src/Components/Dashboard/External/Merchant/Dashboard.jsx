@@ -61,9 +61,9 @@ const MerchantDashboard = () => {
             case 'Profile':
                 return <Profile />;
             case 'TransactionHistory':
-                return <TransactionHistory userDetails={userDetails} />;
+                return <TransactionHistory />;
             case 'RequestPayments':
-                return <RequestPayments userDetails={userDetails} onCancel={() => setCurrentView('Dashboard')} />;
+                return <RequestPayments onCancel={() => setCurrentView('Dashboard')} />;
             case 'ReviewRequests':
                 return <ReviewRequests userDetails={userDetails} onCancel={() => setCurrentView('ReviewRequests')} />;
             default:

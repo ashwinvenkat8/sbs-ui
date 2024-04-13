@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
 export function Profile({ token }) {
@@ -40,30 +40,32 @@ export function Profile({ token }) {
         fetchUserDetails();
     }, [token]);
 
-    const handleUpdateDetails = async () => {
-        try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/user/profile/${userId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Authorization': token,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    attributes: {
-                        address: updatedAddress,
-                        phone_number: updatedPhoneNumber,
-                        email: updateEmail
-
-                    }
-                }),
-            });
-            if (!response.ok) throw new Error('Failed to update user details');
-            alert('User details updated successfully!');
-            setEditMode(false);
-        } catch (error) {
-            console.error('Error updating user details:', error);
+  const handleUpdateDetails = async () => {
+    try {
+      const response = await fetch(
+        process.env.REACT_APP_API_URL + "/user/profile/" + `${userId}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            attributes: {
+              address: updatedAddress,
+              phone_number: updatedPhoneNumber,
+              email: updateEmail,
+            },
+          }),
         }
-    };
+      );
+      if (!response.ok) throw new Error("Failed to update user details");
+      alert("User details updated successfully!");
+      setEditMode(false);
+    } catch (error) {
+      alert("Error updating user details:", error);
+    }
+  };
 
     return (
         <div className='profile'>

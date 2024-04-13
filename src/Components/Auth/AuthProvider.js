@@ -33,7 +33,7 @@ export const useAuth = () => {
                 throw new Error('Logout failed');
             }
         } catch (error) {
-            console.error('Error during logout:', error);
+            alert('Error during logout:', error);
         }
 
         // Clear local storage and update state

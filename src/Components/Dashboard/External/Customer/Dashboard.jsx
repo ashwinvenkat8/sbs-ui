@@ -64,9 +64,9 @@ const CustomerDashboard = () => {
             case 'TransactionHistory':
                 return <TransactionHistory userDetails={userDetails} />;
             case 'TransferFunds':
-                return <TransferFunds userDetails={userDetails} onCancel={() => setCurrentView('Dashboard')} />;
+                return <TransferFunds isCancelled={() => setCurrentView('Dashboard')} isCompleted={() => setCurrentView('TransactionHistory')}/>;
             case 'NewPayment':
-                return <NewPayment userDetails={userDetails} onCancel={() => setCurrentView('Dashboard')} />;
+                return <NewPayment userDetails={userDetails} isCancelled={() => setCurrentView('Dashboard')} />;
             default:
                 return (
                     <div className='welcome-message'>
