@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import { Profile } from './Profile';
 import { TransactionHistory } from './TransactionHistory';
+import { TransferFunds } from './TransferFunds';
 import { RequestPayments } from './RequestPayments';
 import { ReviewRequests } from './ReviewRequests';
 import { useAuth } from '../../../Auth/AuthProvider';
@@ -62,6 +63,8 @@ const MerchantDashboard = () => {
                 return <Profile />;
             case 'TransactionHistory':
                 return <TransactionHistory />;
+            case 'TransferFunds':
+                return <TransferFunds isCancelled={() => setCurrentView('Dashboard')}/>;
             case 'RequestPayments':
                 return <RequestPayments onCancel={() => setCurrentView('Dashboard')} />;
             case 'ReviewRequests':
@@ -96,6 +99,7 @@ const MerchantDashboard = () => {
                 <button onClick={() => setCurrentView('Dashboard')}>Home</button>
                 <button onClick={() => setCurrentView('Profile')}>Profile</button>
                 <button onClick={() => setCurrentView('TransactionHistory')}>Transaction History</button>
+                <button onClick={() => setCurrentView('TransferFunds')}>Transfer Funds</button>
                 <button onClick={() => setCurrentView('RequestPayments')}>Request Payments</button>
                 <button onClick={() => setCurrentView('ReviewRequests')}>Review Requests</button>
                 <button onClick={handleLogout}>Logout</button>
