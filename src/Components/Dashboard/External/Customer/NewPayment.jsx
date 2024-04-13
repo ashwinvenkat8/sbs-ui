@@ -41,17 +41,19 @@ export function NewPayment({ token, onCancel, onFundsAdded }) {
             <br /><br />
             <center>
                 <table>
-                    <tr>
-                        <th>Amount</th>
-                        <td>
-                            <input
-                                type="number"
-                                value={amount}
-                                onChange={(e) => setAmount(e.target.value)}
-                                placeholder="Amount"
-                            />
-                        </td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <th>Amount</th>
+                            <td>
+                                <input
+                                    type="number"
+                                    value={amount}
+                                    onChange={(e) => setAmount(e.target.value)}
+                                    placeholder="Amount"
+                                />
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
                 <br /><br />
                 <button className='confirm-pay' onClick={handleAddFunds}>Pay</button>

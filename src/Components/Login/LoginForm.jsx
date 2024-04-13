@@ -134,7 +134,10 @@ const LoginForm = () => {
               <input
                 type="text"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  setErrorMessage("");
+                }}
                 required
               />
             </div>
@@ -144,7 +147,10 @@ const LoginForm = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setErrorMessage("");
+                  }}
                   required
                 />
                 <button type="button" onClick={togglePasswordVisibility} className="toggle-visibility">

@@ -34,6 +34,7 @@ const RegistrationForm = () => {
       ...prevState,
       [name]: value,
     }));
+    setErrorMessage("");
   };
 
   const submitRegistrationForm = async (e) => {

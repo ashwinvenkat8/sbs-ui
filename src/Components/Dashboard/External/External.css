@@ -38,6 +38,32 @@
     padding: 0;
 }
 
+.customer-dashboard h1,
+.customer-dashboard h2,
+.customer-dashboard h3 {
+    color: #005;
+    text-align: center;
+}
+
+.account-overview table {
+    table-layout: fixed;
+    width: 50%;
+    text-align: center;
+}
+
+.pending-reviews table {
+    table-layout: fixed;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.pending-reviews table tr th,
+.pending-reviews table tr td {
+    padding: 0.5rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
 .transaction-history table {
     table-layout: fixed;
     width: 100%;
@@ -45,9 +71,26 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.transaction-history table tr th, td {
+.transaction-history table tr th,
+.transaction-history table tr td {
     padding: 0.5rem;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-history .debit {
+    color: #a00;
+}
+
+.transaction-history .debit::before {
+    content: "- ";
+}
+
+.transaction-history .credit {
+    color: #0a0;
+}
+
+.transaction-history .credit::before {
+    content: "+ ";
 }
 
 .profile table,
@@ -59,9 +102,12 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.profile table tr th, td,
-.transfer-funds table tr th, td,
-.new-payment table tr th, td {
+.profile table tr th,
+.profile table tr td,
+.transfer-funds table tr th,
+.transfer-funds table tr td,
+.new-payment table tr th,
+.new-payment table tr td {
     padding: 0.5rem;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 }

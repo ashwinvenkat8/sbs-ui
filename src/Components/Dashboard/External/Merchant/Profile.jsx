@@ -75,54 +75,56 @@ export function Profile({ token }) {
           <h2>User Profile</h2>
           <br />
           <table>
-            <tr>
-              <th>Username</th>
-              <td>{userDetails.username}</td>
-            </tr>
-            <tr>
-              <th>Email</th>
-              <td>{userDetails.email}</td>
-            </tr>
-            <tr>
-              <th>First Name</th>
-              <td>{userAttributes.first_name}</td>
-            </tr>
-            <tr>
-              <th>Middle Name</th>
-              <td>{userAttributes.middle_name || "-"}</td>
-            </tr>
-            <tr>
-              <th>Last Name</th>
-              <td>{userAttributes.last_name}</td>
-            </tr>
-            <tr>
-              <th>Date of Birth</th>
-              <td>{userAttributes.date_of_birth}</td>
-            </tr>
-            <tr>
-              <th>Gender</th>
-              <td>{userAttributes.gender}</td>
-            </tr>
-            <tr>
-              <th>SSN</th>
-              <td>{userAttributes.ssn}</td>
-            </tr>
-            <tr>
-              <th>Address</th>
-              <td>{userAttributes.address}</td>
-            </tr>
-            <tr>
-              <th>Phone Number</th>
-              <td>{userAttributes.phone_number}</td>
-            </tr>
-            <tr>
-              <th>Role</th>
-              <td>{userDetails.role}</td>
-            </tr>
-            <tr>
-              <th>Account Number</th>
-              <td>{accountDetails.accountNumber}</td>
-            </tr>
+            <tbody>
+                <tr>
+                <th>Username</th>
+                <td>{userDetails.username}</td>
+              </tr>
+              <tr>
+                <th>Email</th>
+                <td>{userDetails.email}</td>
+              </tr>
+              <tr>
+                <th>First Name</th>
+                <td>{userAttributes.first_name}</td>
+              </tr>
+              <tr>
+                <th>Middle Name</th>
+                <td>{userAttributes.middle_name || "-"}</td>
+              </tr>
+              <tr>
+                <th>Last Name</th>
+                <td>{userAttributes.last_name}</td>
+              </tr>
+              <tr>
+                <th>Date of Birth</th>
+                <td>{userAttributes.date_of_birth}</td>
+              </tr>
+              <tr>
+                <th>Gender</th>
+                <td>{userAttributes.gender}</td>
+              </tr>
+              <tr>
+                <th>SSN</th>
+                <td>{userAttributes.ssn}</td>
+              </tr>
+              <tr>
+                <th>Address</th>
+                <td>{userAttributes.address}</td>
+              </tr>
+              <tr>
+                <th>Phone Number</th>
+                <td>{userAttributes.phone_number}</td>
+              </tr>
+              <tr>
+                <th>Role</th>
+                <td>{userDetails.role}</td>
+              </tr>
+              <tr>
+                <th>Account Number</th>
+                <td>{accountDetails.accountNumber}</td>
+              </tr>
+            </tbody>
           </table>
           <br />
           <button className="edit-profile" onClick={() => setEditMode(true)}>
@@ -134,36 +136,28 @@ export function Profile({ token }) {
           <h2>Edit Profile</h2>
           <br />
           <table>
-            <tr>
-              <th>Address</th>
-              <td>
-                <input
-                  type="text"
-                  value={updatedAddress}
-                  onChange={(e) => setUpdatedAddress(e.target.value)}
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>Phone Number</th>
-              <td>
-                <input
-                  type="tel"
-                  value={updatedPhoneNumber}
-                  onChange={(e) => setUpdatedPhoneNumber(e.target.value)}
-                />
-              </td>
-            </tr>
-            {/* <tr>
-              <th>Email</th>
-              <td>
-                <input
-                  type="text"
-                  value={updateEmail}
-                  onChange={(e) => setUpdateEmail(e.target.value)}
-                />
-              </td>
-            </tr> */}
+            <tbody>
+              <tr>
+                <th>Address</th>
+                <td>
+                  <input
+                    type="text"
+                    value={updatedAddress}
+                    onChange={(e) => setUpdatedAddress(e.target.value)}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th>Phone Number</th>
+                <td>
+                  <input
+                    type="tel"
+                    value={updatedPhoneNumber}
+                    onChange={(e) => setUpdatedPhoneNumber(e.target.value)}
+                  />
+                </td>
+              </tr>
+            </tbody>
           </table>
           <br />
           <button onClick={handleUpdateDetails}>Save</button>

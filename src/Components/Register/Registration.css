@@ -34,7 +34,8 @@
     color: red;
 }
 
-.register-container h1, h2 {
+.register-container h1,
+.register-container h2 {
     color: #005;
     text-align: center;
 }
@@ -94,7 +95,7 @@
 
 .register-container .register-button:hover {
     color: #005;
-    background-color: #eee;
+    background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 

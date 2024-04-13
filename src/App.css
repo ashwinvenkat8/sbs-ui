@@ -79,7 +79,7 @@ nav {
   background-color: #005;
   color: #eee;
   outline: none;
-  border: none;
+  border: 1px solid #005;
   border-radius: 0.5rem;
   font-size: 1.1rem;
   cursor: pointer;
@@ -91,9 +91,4 @@ nav {
   color: #005;
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.primary-button svg {
-  margin-left: 0.75rem;
-  font-size: 1.5rem;
 }
