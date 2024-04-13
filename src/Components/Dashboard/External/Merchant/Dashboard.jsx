@@ -34,14 +34,14 @@ const MerchantDashboard = () => {
                 });
 
                 if (!response.ok) throw new Error('Failed to fetch user details');
-                
+
                 const accountData = await response.json();
                 const userData = accountData.user;
                 
                 setAccountDetails(accountData);
                 setUserDetails(userData);
                 setUserAttributes(userData.attributes);
-            
+                
             } catch (error) {
                 console.error('Error fetching user details:', error);
                 navigate('/login');
