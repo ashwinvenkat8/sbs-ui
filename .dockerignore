@@ -1,0 +1,5 @@
+.gitignore
+.env
+README.md
+build/
+node_modules/
