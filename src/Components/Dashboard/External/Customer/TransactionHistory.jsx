@@ -22,7 +22,7 @@ const getParsedTxns = (transactions) => {
     return parsedTxns;
 };
 
-export function TransactionHistory() {
+export function TransactionHistory({ balance }) {
     const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
@@ -58,6 +58,10 @@ export function TransactionHistory() {
         <center>
             <div className='transaction-history'>
                 <h2>Transaction History</h2>
+                <br />
+                <div>
+                    <p><span className='balance'>Current Balance:</span> ${balance}</p>
+                </div>
                 <br />
                 {transactions.length > 0 ? (
                     <table>

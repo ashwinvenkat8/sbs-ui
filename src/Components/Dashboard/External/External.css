@@ -64,6 +64,10 @@
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
+.transaction-history .balance {
+    font-weight: 600;
+}
+
 .transaction-history table {
     table-layout: fixed;
     width: 100%;

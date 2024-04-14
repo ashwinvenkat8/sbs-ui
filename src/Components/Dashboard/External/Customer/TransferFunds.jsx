@@ -72,7 +72,7 @@ export function TransferFunds({ isCancelled, isCompleted }) {
             const responseJson = await response.json();
             alert(responseJson.message);
 
-            isCompleted = true;
+            isCompleted();
 
         } catch (error) {
             console.error("Error transferring funds:", error);
@@ -84,7 +84,7 @@ export function TransferFunds({ isCancelled, isCompleted }) {
         setAmount("");
         setTransactionOTP("");
         setShowOTPVerification(false);
-        isCancelled = true;
+        isCancelled();
     };
 
     return (
