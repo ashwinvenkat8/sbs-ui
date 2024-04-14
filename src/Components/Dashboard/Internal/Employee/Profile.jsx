@@ -38,7 +38,7 @@ export default function EmployeeProfile() {
     return (
         <div className="profile">
             <center>
-                <h2>User Profile</h2>
+                <h2>Employee Profile</h2>
                 <br />
                 <table>
                     <tbody>
@@ -91,46 +91,5 @@ export default function EmployeeProfile() {
                 <br />
             </center>
         </div>
-        // <div>
-        //   <h2>Admin Profile</h2>
-        //   {!editMode ? (
-        //     <div>
-        //       {/* Display all user details */}
-        //       <p>Username: {userDetails.username}</p>
-        //       <p>Email: {userDetails.email}</p>
-        //       <p>First Name: {userDetails.first_name}</p>
-        //       <p>Middle Name: {userDetails.middle_name}</p>
-        //       <p>Last Name: {userDetails.last_name}</p>
-        //       <p>Date of Birth: {userDetails.date_of_birth}</p>
-        //       <p>Gender: {userDetails.gender}</p>
-        //       <p>SSN: {userDetails.ssn}</p>
-        //       <p>Address: {userDetails.address}</p>
-        //       <p>Phone Number: {userDetails.phone_number}</p>
-        //       <p>Role: {userDetails.role}</p>
-        //       {/* Assuming accountNumber is part of userDetails */}
-        //       <p>Account Number: {userDetails.accountNumber}</p>
-        //       <button onClick={() => setEditMode(true)}>Edit</button>
-        //     </div>
-        //   ) : (
-        //     <div>
-        //       <h2>Edit Profile</h2>
-        //       {/* Editable fields */}
-        //       <label>Address:</label>
-        //       <input
-        //         type="text"
-        //         value={updatedAddress}
-        //         onChange={(e) => setUpdatedAddress(e.target.value)}
-        //       />
-        //       <label>Phone Number:</label>
-        //       <input
-        //         type="text"
-        //         value={updatedPhoneNumber}
-        //         onChange={(e) => setUpdatedPhoneNumber(e.target.value)}
-        //       />
-        //       <button onClick={handleUpdateDetails}>Save</button>
-        //       <button onClick={() => setEditMode(false)}>Cancel</button>
-        //     </div>
-        //   )}
-        // </div>
     );
 }

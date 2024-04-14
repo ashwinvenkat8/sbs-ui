@@ -1,50 +1,77 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const ListTransactions = () => {
-    const [users, setUsers] = useState([]);
-    const [selectedUserDetails, setSelectedUserDetails] = useState(null);
-    const token = localStorage.getItem('authToken');
+    const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
-        // Function to fetch all transactions
-        const fetchUsers = async () => {
+        const token = localStorage.getItem("authToken");
+        const fetchAllTransactions = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/profile/all`, {
-                    headers: { 'Authorization': token }
-                });
-                const data = await response.json();
-                setUsers(data);
+                const transactionsResponse = await fetch(
+                    `${process.env.REACT_APP_API_URL}/transaction/all`,
+                    {
+                        headers: { Authorization: token },
+                    }
+                );
+
+                const transactionsData = await transactionsResponse.json();
+
+                console.log(transactionsData);
+                setTransactions(transactionsData);
             } catch (error) {
-                console.error('Failed to fetch users:', error);
+                console.error("Failed to fetch users:", error);
             }
         };
-        fetchUsers();
-    }, [token]);
-
-    const fetchUserDetails = async (userId) => {
-        try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/profile/${userId}`, {
-                headers: { 'Authorization': token }
-            });
-            if (response.ok) {
-                setSelectedUserDetails(await response.json());
-            } else {
-                console.error('Failed to fetch user details');
-            }
-        } catch (error) {
-            console.error('Error fetching user details:', error);
-        }
-    };
+        fetchAllTransactions();
+    }, []);
 
     return (
         <div>
-            <h2>All Users</h2>
-            {users.map((user) => (
-                <div key={user._id} onClick={() => fetchUserDetails(user._id)} style={{ cursor: 'pointer' }}>
-                    {user.name} ({user.username})
-                </div>
-            ))}
-            
+            <h1>Transactions</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Review</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {transactions.map((transaction) => (
+                        <tr key={transaction._id}>
+                            <td>{transaction._id}</td>
+                            <td>
+                                {transaction.from.user?.attributes?.first_name}{" "}
+                                {transaction.from.user?.attributes?.last_name}
+                            </td>
+                            <td>
+                                {transaction.to.user?.attributes?.first_name}{" "}
+                                {transaction.to.user?.attributes?.last_name}
+                            </td>
+                            <td>{transaction.amount}</td>
+                            <td>{transaction.type}</td>
+                            <td>{transaction.status}</td>
+                            <td>{transaction.review}</td>
+                            <td>
+                                {new Date(
+                                    transaction.createdAt
+                                ).toLocaleString()}
+                            </td>
+                            <td>
+                                {new Date(
+                                    transaction.updatedAt
+                                ).toLocaleString()}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };

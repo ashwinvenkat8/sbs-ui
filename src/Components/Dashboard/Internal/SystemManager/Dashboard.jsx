@@ -1,64 +1,108 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode';
-import './Manager.css'
-import { useAuth } from '../../../Auth/AuthProvider';
-import RequestTransactions from './RequestAccountTransactions';
-import ApprovedReviews from './ApprovedTransactions';
-import ListTransactions from './ListTransaction';
-import ManagerProfile from './Profile';
-import AuthorizeTransactions from './AuthorizeTransactions';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../../../Auth/AuthProvider";
+import RequestTransactions from "./RequestAccountTransactions";
+import ApprovedReviews from "./ApprovedTransactions";
+import ListTransactions from "./ListTransaction";
+import ManagerProfile from "./Profile";
+import AuthorizeTransactions from "./AuthorizeTransactions";
+import "../Internal.css";
 
 const ManagerDashboard = () => {
     const navigate = useNavigate();
     const { handleLogout } = useAuth();
-    const [currentView, setCurrentView] = useState('authorizeTransactions');
-    const [username, setUsername] = useState('');
+    const [currentView, setCurrentView] = useState("Dashboard");
+    const [userDetails, setUserDetails] = useState({});
+    const [userAttributes, setUserAttributes] = useState({});
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            navigate('/login');
-            return;
-        }
+        const fetchUserDetails = async () => {
+            try {
+                const token = localStorage.getItem("authToken");
+                const decodeToken = jwtDecode(token);
 
-        try {
-            const decoded = jwtDecode(token);
-            setUsername(decoded.username); // Assuming the decoded token contains username
-        } catch (error) {
-            console.error('Error decoding token:', error);
-            navigate('/login');
-        }
+                if (!token) throw new Error("JWT not found");
+
+                const userId = decodeToken.userId;
+                const userResponse = await fetch(
+                    `${process.env.REACT_APP_API_URL}/user/profile/${userId}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            Authorization: token,
+                        },
+                    }
+                );
+
+                if (!userResponse.ok)
+                    throw new Error("Failed to fetch user details");
+
+                const userData = await userResponse.json();
+
+                setUserDetails(userData);
+                setUserAttributes(userData.attributes);
+            } catch (error) {
+                console.error("Error fetching user details: ", error);
+            }
+        };
+
+        fetchUserDetails();
     }, [navigate]);
 
-  
-
     const renderContent = () => {
+        const welcomeMessage = userAttributes.first_name
+            ? `Welcome, ${userAttributes.first_name}`
+            : "Welcome";
+        const lastLogin = new Date(userDetails.last_login).toLocaleString(
+            "en-US",
+            {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+                timeZoneName: "short",
+                hour12: true,
+            }
+        );
+
         switch (currentView) {
-            case 'profile':
-                return <ManagerProfile token={localStorage.getItem('authToken')} />;
-            case 'listtransactions':
-                return <ListTransactions token={localStorage.getItem('authToken')} />;
-            case 'approvedtransactions':
-                return <ApprovedReviews token={localStorage.getItem('authToken')} />;
-            case 'requesttransactions':
-                return <RequestTransactions token={localStorage.getItem('authToken')} />;
-            case 'authorizeTransaction':
-                return <AuthorizeTransactions token={localStorage.getItem('authToken')} />;
+            case "Profile":
+                return <ManagerProfile />;
+            case "ListTransactions":
+                return <ListTransactions />;
+            case "ApprovedTxnReviews":
+                return <ApprovedReviews />;
+            case "RequestTxnReview":
+                return <RequestTransactions />;
+            case "AuthorizeTransactions":
+                return <AuthorizeTransactions />;
             default:
-                return <h2>Welcome, {username || 'Manager'}!</h2>;
+                return (
+                    <div className="welcome-message">
+                        <center>
+                            <h1>{welcomeMessage}</h1>
+                            <p className="welcome-message">
+                                Last Login: {lastLogin}
+                            </p>
+                            <br />
+                        </center>
+                    </div>
+                );
         }
     };
 
     return (
-        <div className="admin-dashboard">
+        <div className="internal-dashboard">
             <h1>Manager Dashboard</h1>
             <nav>
-                <button onClick={() => setCurrentView('profile')}>Profile</button>
-                <button onClick={() => setCurrentView('listtransactions')}>List Transactions</button>
-                <button onClick={() => setCurrentView('requesttransactions')}>Request Account Transactions</button>
-                <button onClick={() => setCurrentView('approvedtransactions')}>Approved Transactions</button>
-                <button onClick={() => setCurrentView('authorizeTransaction')}>Authorize Transaction</button>
+                <button onClick={() => setCurrentView("Profile")}>Profile</button>
+                <button onClick={() => setCurrentView("ListTransactions")}>List Transactions</button>
+                <button onClick={() => setCurrentView("RequestTxnReview")}>Request Account Transactions</button>
+                <button onClick={() => setCurrentView("ApprovedTxnReviews")}>Approved Transactions</button>
+                <button onClick={() => setCurrentView("AuthorizeTransactions")}>Authorize Transaction</button>
                 <button onClick={handleLogout}>Logout</button>
             </nav>
             {renderContent()}
@@ -67,7 +111,3 @@ const ManagerDashboard = () => {
 };
 
 export default ManagerDashboard;
-
-
-
-

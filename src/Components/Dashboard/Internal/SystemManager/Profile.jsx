@@ -1,84 +1,94 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
-export default function ManagerProfile({ token }) {
+export default function ManagerProfile() {
     const [userDetails, setUserDetails] = useState({});
-    const [editMode, setEditMode] = useState(false);
-    const [updatedAddress, setUpdatedAddress] = useState('');
-    const [updatedPhoneNumber, setUpdatedPhoneNumber] = useState('');
+    const [userAttributes, setUserAttributes] = useState({});
 
     useEffect(() => {
         const fetchUserDetails = async () => {
+
+            const authToken = localStorage.getItem("authToken");
+            const decodedToken = jwtDecode(authToken);
+
             try {
-                const response = await fetch(process.env.REACT_APP_API_URL + '/api/v1/user/profile/YOUR_USER_ID', {
-                    headers: { 'Authorization': token }
-                });
-                if (!response.ok) throw new Error('Failed to fetch user details');
-                const data = await response.json();
-                setUserDetails(data);
-                setUpdatedAddress(data.address);
-                setUpdatedPhoneNumber(data.phone_number);
+                const profileResponse = await fetch(
+                    `${process.env.REACT_APP_API_URL}/user/profile/${decodedToken.userId}`,
+                    {
+                        headers: {
+                            Authorization: authToken,
+                        },
+                    }
+                );
+                if (!profileResponse.ok)
+                    throw new Error("Failed to fetch user details");
+
+                const profileData = await profileResponse.json();
+
+                setUserDetails(profileData);
+                setUserAttributes(profileData.attributes);
             } catch (error) {
-                console.error('Error fetching user details:', error);
+                console.error("Error fetching user details:", error);
             }
         };
         fetchUserDetails();
-    }, [token]); // Dependency array with token to re-fetch if the token changes
-
-    const handleUpdateDetails = async () => {
-        try {
-            const response = await fetch(process.env.REACT_APP_API_URL + '/api/v1/user/profile/YOUR_USER_ID' , {
-                method: 'PUT',
-                headers: {
-                    'Authorization': ` ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    address: updatedAddress,
-                    phone_number: updatedPhoneNumber,
-                }),
-            });
-            if (!response.ok) throw new Error('Failed to update user details');
-            alert('User details updated successfully!');
-            setEditMode(false);
-        } catch (error) {
-            console.error('Error updating user details:', error);
-        }
-    };
+    }, []);
 
     return (
-        <div>
-            <h2>Admin Profile</h2>
-            {!editMode ? (
-                <div>
-                    {/* Display all user details */}
-                    <p>Username: {userDetails.username}</p>
-                    <p>Email: {userDetails.email}</p>
-                    <p>First Name: {userDetails.first_name}</p>
-                    <p>Middle Name: {userDetails.middle_name}</p>
-                    <p>Last Name: {userDetails.last_name}</p>
-                    <p>Date of Birth: {userDetails.date_of_birth}</p>
-                    <p>Gender: {userDetails.gender}</p>
-                    <p>SSN: {userDetails.ssn}</p>
-                    <p>Address: {userDetails.address}</p>
-                    <p>Phone Number: {userDetails.phone_number}</p>
-                    <p>Role: {userDetails.role}</p>
-                    {/* Assuming accountNumber is part of userDetails */}
-                    <p>Account Number: {userDetails.accountNumber}</p> 
-                    <button onClick={() => setEditMode(true)}>Edit</button>
-                </div>
-            ) : (
-                <div>
-                    <h2>Edit Profile</h2>
-                    {/* Editable fields */}
-                    <label>Address:</label>
-                    <input type="text" value={updatedAddress} onChange={e => setUpdatedAddress(e.target.value)} />
-                    <label>Phone Number:</label>
-                    <input type="text" value={updatedPhoneNumber} onChange={e => setUpdatedPhoneNumber(e.target.value)} />
-                    <button onClick={handleUpdateDetails}>Save</button>
-                    <button onClick={() => setEditMode(false)}>Cancel</button>
-                </div>
-            )}
+        <div className="profile">
+            <center>
+                <h2>Manager Profile</h2>
+                <br />
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Username</th>
+                            <td>{userDetails.username}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{userDetails.email}</td>
+                        </tr>
+                        <tr>
+                            <th>First Name</th>
+                            <td>{userAttributes.first_name}</td>
+                        </tr>
+                        <tr>
+                            <th>Middle Name</th>
+                            <td>{userAttributes.middle_name || "-"}</td>
+                        </tr>
+                        <tr>
+                            <th>Last Name</th>
+                            <td>{userAttributes.last_name}</td>
+                        </tr>
+                        <tr>
+                            <th>Date of Birth</th>
+                            <td>{userAttributes.date_of_birth}</td>
+                        </tr>
+                        <tr>
+                            <th>Gender</th>
+                            <td>{userAttributes.gender}</td>
+                        </tr>
+                        <tr>
+                            <th>SSN</th>
+                            <td>{userAttributes.ssn}</td>
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <td>{userAttributes.address}</td>
+                        </tr>
+                        <tr>
+                            <th>Phone Number</th>
+                            <td>{userAttributes.phone_number}</td>
+                        </tr>
+                        <tr>
+                            <th>Role</th>
+                            <td>{userDetails.role}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+            </center>
         </div>
     );
 }
-
