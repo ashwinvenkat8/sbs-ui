@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import CustomerDashboard from './Dashboard';
 
 export function NewPayment({ isCancelled }) {
-    const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState("");
     const [formData, setFormData] = useState({});
     const [merchantList, setMerchantList] = useState([]);
@@ -67,7 +66,8 @@ export function NewPayment({ isCancelled }) {
             if (!response.ok) throw new Error('Payment failed');
 
             alert(`Payment succeeded`);
-            navigate('/customer/dashboard');
+            
+            return <CustomerDashboard />;
 
         } catch (error) {
             console.error('Error during payment:', error);
@@ -80,45 +80,51 @@ export function NewPayment({ isCancelled }) {
             <h2>New Payment</h2>
             <br /><br />
             <center>
-                <table>
-                    <tbody>
-                        <tr>
-                            <th>Merchant</th>
-                            <td>
-                                <select
-                                    name="merchant"
-                                    value={formData.merchant}
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    <option value="">Select Merchant</option>
-                                    {merchantList.map((merchant) => (
-                                        <option key={merchant.attributes.payment_id} value={merchant.attributes.payment_id}>
-                                            {merchant.attributes.business_name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Amount</th>
-                            <td>
-                                <input
-                                    name="amount"
-                                    type="number"
-                                    value={formData.amount}
-                                    onChange={handleChange}
-                                    placeholder="Amount"
-                                />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <br />
-                {errorMessage && <div className="error-message"><center>{errorMessage}</center></div>}
-                <br />
-                <button className='confirm-pay' onClick={handlePayment}>Pay</button>
-                <button className='cancel-pay' onClick={isCancelled}>Cancel</button>
+                {merchantList > 0 ? (
+                    <><table>
+                        <tbody>
+                            <tr>
+                                <th>Merchant</th>
+                                <td>
+                                    {merchantList > 0 && (
+                                        <select
+                                            name="merchant"
+                                            value={formData.merchant}
+                                            onChange={handleChange}
+                                            required
+                                        >
+                                            <option value="">Select Merchant</option>
+                                            {merchantList.map((merchant) => (
+                                                <option key={merchant.attributes.payment_id} value={merchant.attributes.payment_id}>
+                                                    {merchant.attributes.business_name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    )}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Amount</th>
+                                <td>
+                                    <input
+                                        name="amount"
+                                        type="number"
+                                        value={formData.amount}
+                                        onChange={handleChange}
+                                        placeholder="Amount"
+                                    />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    {errorMessage && <div className="error-message"><center>{errorMessage}</center></div>}
+                    <br />
+                    <button className='confirm-pay' onClick={handlePayment}>Pay</button>
+                    <button className='cancel-pay' onClick={isCancelled}>Cancel</button></>
+                ) : (
+                    <p>There are no merchants registered with this bank</p>
+                )}
             </center>
         </div>
     );

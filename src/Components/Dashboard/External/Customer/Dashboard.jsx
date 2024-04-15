@@ -16,10 +16,14 @@ const getParsedReviews = (reviews, userId) => {
             return;
         }
 
+        const firstName = review.createdBy.user?.attributes.first_name || '';
+        const lastName = review.createdBy.user?.attributes.last_name || '';
+        const fullName = `${firstName} ${lastName}`;
+
         parsedReviews.push({
             id: review._id,
             type: review.type,
-            name: `${review.createdBy.user?.attributes.first_name} ${review.createdBy.user?.attributes.last_name}` || '',
+            name: fullName,
             reviewItem: review.reviewObject
         });
     });
@@ -180,12 +184,12 @@ const CustomerDashboard = () => {
                                         </thead>
                                         <tbody>
                                             {pendingReviews.map((review) => (
-                                                <tr>
+                                                <tr key={review._id}>
                                                     <td>{review.type}</td>
                                                     <td>{review.name}</td>
                                                     <td>{review.reviewItem}</td>
                                                     <td>
-                                                        {!review.type === 'HIGH VALUE TXN' && (
+                                                        {review.type !== 'HIGH VALUE TXN' && (
                                                             <><button onClick={() => handleReview(review.id, 'authorize')}>Approve</button>
                                                             <button onClick={() => handleReview(review.id, 'reject')}>Reject</button></>
                                                         )}
@@ -206,6 +210,8 @@ const CustomerDashboard = () => {
 
     return (
         <div className="external-dashboard">
+            <h2>Customer</h2>
+            <br />
             <nav>
                 <button onClick={() => setCurrentView('Dashboard')}>Dashboard</button>
                 <button onClick={() => setCurrentView('Profile')}>Profile</button>
