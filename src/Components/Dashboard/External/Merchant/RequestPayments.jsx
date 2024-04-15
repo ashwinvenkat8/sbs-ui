@@ -36,7 +36,7 @@ export function RequestPayments({ isCancelled }) {
             if (!response.ok) throw new Error('Failed to request payment');
             
             alert(responseJson.message);
-            navigate('/');
+            navigate('/merchant/dashboard');
         
         } catch (error) {
             console.error('Error: ', error);

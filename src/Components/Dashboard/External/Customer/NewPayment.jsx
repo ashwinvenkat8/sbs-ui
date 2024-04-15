@@ -67,7 +67,7 @@ export function NewPayment({ isCancelled }) {
             if (!response.ok) throw new Error('Payment failed');
 
             alert(`Payment succeeded`);
-            navigate('/');
+            navigate('/customer/dashboard');
 
         } catch (error) {
             console.error('Error during payment:', error);
