@@ -65,9 +65,8 @@ export function NewPayment({ isCancelled }) {
             });
 
             if (!response.ok) throw new Error('Payment failed');
-            const result = await response.json();
 
-            alert(`Payment succeeded! Current balance: ${result.newBalance}`);
+            alert(`Payment succeeded`);
             navigate('/');
 
         } catch (error) {
@@ -94,8 +93,8 @@ export function NewPayment({ isCancelled }) {
                                 >
                                     <option value="">Select Merchant</option>
                                     {merchantList.map((merchant) => (
-                                        <option key={merchant.payment_id} value={merchant.payment_id}>
-                                            {merchant.business_name}
+                                        <option key={merchant.attributes.payment_id} value={merchant.attributes.payment_id}>
+                                            {merchant.attributes.business_name}
                                         </option>
                                     ))}
                                 </select>

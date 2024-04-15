@@ -8,6 +8,25 @@ import { useAuth } from '../../../Auth/AuthProvider';
 import { NewPayment } from './NewPayment';
 import '../External.css';
 
+const getParsedReviews = (reviews, userId) => {
+    const parsedReviews = [];
+
+    reviews.forEach((review) => {
+        if(review.reviewObject !== userId || review.createdBy !== userId) {
+            return;
+        }
+
+        parsedReviews.push({
+            id: review._id,
+            type: review.type,
+            name: `${review.createdBy.user?.attributes.first_name} ${review.createdBy.user?.attributes.last_name}` || '',
+            reviewItem: review.reviewObject
+        });
+    });
+
+    return parsedReviews;
+};
+
 const CustomerDashboard = () => {
     const navigate = useNavigate();
     const { handleLogout } = useAuth();
@@ -15,25 +34,35 @@ const CustomerDashboard = () => {
     const [accountDetails, setAccountDetails] = useState({});
     const [userDetails, setUserDetails] = useState({});
     const [userAttributes, setUserAttributes] = useState({});
+    const [pendingReviews, setPendingReviews] = useState([]);
 
     useEffect(() => {
-        // const fetchPendingReviews = async() => {
-        //     const token = localStorage.getItem('authToken');
-        //     const decodedToken = jwtDecode(token);
+        const fetchPendingReviews = async() => {
+            try {
+                const token = localStorage.getItem('authToken');
+                const decodedToken = jwtDecode(token);
 
-        //     if (!token) throw new Error('JWT not found');
+                if (!token) throw new Error('JWT not found');
 
-        //     const filter = ``;
+                const pendingReviewsResponse = await fetch(`${process.env.REACT_APP_API_URL}/review/filter?status=PENDING APPROVAL`, {
+                    method: 'GET',
+                    headers: { 
+                        'Authorization': token
+                    }
+                });
 
-        //     const paymentReviewsResponse = await fetch(`${process.env.REACT_APP_API_URL}/review/filter?${filter}`, {
-        //         method: 'GET',
-        //         headers: { 
-        //             'Authorization': token
-        //         }
-        //     });
+                const reviewData = await pendingReviewsResponse.json();
 
-        //     if (!paymentReviewsResponse.ok) throw new Error('Failed to fetch user details');
-        // };
+                if (!pendingReviewsResponse.ok) {
+                    throw new Error('Failed to fetch pending reviews');
+                }
+
+                setPendingReviews(getParsedReviews(reviewData, decodedToken.userId));
+            
+            } catch (error) {
+                console.error('Error fetching pending reviews: ', error);
+            }
+        };
         
         const fetchUserDetails = async () => {
             try {
@@ -50,7 +79,9 @@ const CustomerDashboard = () => {
                     }
                 });
 
-                if (!response.ok) throw new Error('Failed to fetch user details');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user details');
+                }
 
                 const accountData = await response.json();
                 const userData = accountData.user;
@@ -66,9 +97,31 @@ const CustomerDashboard = () => {
         };
 
         fetchUserDetails();
-        // fetchPendingReviews();
+        fetchPendingReviews();
 
     }, [navigate]);
+
+    const handleReview = async (reviewId, action) => {
+        try {
+            const token = localStorage.getItem('authToken');
+
+            if (!token) throw new Error('JWT not found');
+
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/review/${action}/${reviewId}`, {
+                method: 'PATCH',
+                headers: { 'Authorization': token }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to ${action} review`);
+            }
+
+            alert(`Review ${action}ed successfully`);
+
+        } catch (error) {
+            console.error(`Error ${action}ing review: ${error}`);
+        }
+    };
 
     const renderContent = () => {
         const welcomeMessage = userAttributes.first_name ? `Welcome, ${userAttributes.first_name}`: 'Welcome';
@@ -81,11 +134,11 @@ const CustomerDashboard = () => {
             case 'Profile':
                 return <Profile />;
             case 'TransactionHistory':
-                return <TransactionHistory userDetails={userDetails} />;
+                return <TransactionHistory balance={accountDetails.balance} />;
             case 'TransferFunds':
                 return <TransferFunds isCancelled={() => setCurrentView('Dashboard')} isCompleted={() => setCurrentView('TransactionHistory')}/>;
             case 'NewPayment':
-                return <NewPayment userDetails={userDetails} isCancelled={() => setCurrentView('Dashboard')} />;
+                return <NewPayment isCancelled={() => setCurrentView('Dashboard')} isCompleted={() => setCurrentView('TransactionHistory')} />;
             default:
                 return (
                     <div className='welcome-message'>
@@ -115,17 +168,35 @@ const CustomerDashboard = () => {
                             <div className='pending-reviews'>
                                 <h2>Pending Reviews</h2>
                                 <br />
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Type</th>
-                                            <th>From</th>
-                                            <th>Review Item</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
+                                {pendingReviews.length > 0 ? (
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Type</th>
+                                                <th>From</th>
+                                                <th>Review Item</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {pendingReviews.map((review) => (
+                                                <tr>
+                                                    <td>{review.type}</td>
+                                                    <td>{review.name}</td>
+                                                    <td>{review.reviewItem}</td>
+                                                    <td>
+                                                        {!review.type === 'HIGH VALUE TXN' && (
+                                                            <><button onClick={() => handleReview(review.id, 'authorize')}>Approve</button>
+                                                            <button onClick={() => handleReview(review.id, 'reject')}>Reject</button></>
+                                                        )}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                ) : (
+                                    <p>No pending reviews found</p>
+                                )}
                             </div>
                         </center>
                     </div>
@@ -134,7 +205,7 @@ const CustomerDashboard = () => {
     };
 
     return (
-        <div className="customer-dashboard">
+        <div className="external-dashboard">
             <nav>
                 <button onClick={() => setCurrentView('Dashboard')}>Dashboard</button>
                 <button onClick={() => setCurrentView('Profile')}>Profile</button>

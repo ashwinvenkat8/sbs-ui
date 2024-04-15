@@ -9,6 +9,25 @@ import { ReviewRequests } from './ReviewRequests';
 import { useAuth } from '../../../Auth/AuthProvider';
 import '../External.css';
 
+const getParsedReviews = (reviews, userId) => {
+    const parsedReviews = [];
+
+    reviews.forEach((review) => {
+        if(review.reviewObject !== userId || review.createdBy !== userId) {
+            return;
+        }
+
+        parsedReviews.push({
+            id: review._id,
+            type: review.type,
+            name: `${review.createdBy.user?.attributes.first_name} ${review.createdBy.user?.attributes.last_name}` || '',
+            reviewItem: review.reviewObject
+        });
+    });
+
+    return parsedReviews;
+};
+
 const MerchantDashboard = () => {
     const navigate = useNavigate();
     const { handleLogout } = useAuth();
@@ -16,8 +35,36 @@ const MerchantDashboard = () => {
     const [accountDetails, setAccountDetails] = useState({});
     const [userDetails, setUserDetails] = useState({});
     const [userAttributes, setUserAttributes] = useState({});
+    const [pendingReviews, setPendingReviews] = useState([]);
 
     useEffect(() => {
+        const fetchPendingReviews = async() => {
+            try {
+                const token = localStorage.getItem('authToken');
+                const decodedToken = jwtDecode(token);
+
+                if (!token) throw new Error('JWT not found');
+
+                const pendingReviewsResponse = await fetch(`${process.env.REACT_APP_API_URL}/review/filter?status=PENDING APPROVAL`, {
+                    method: 'GET',
+                    headers: { 
+                        'Authorization': token
+                    }
+                });
+
+                const reviewData = await pendingReviewsResponse.json();
+
+                if (!pendingReviewsResponse.ok) {
+                    throw new Error('Failed to fetch pending reviews');
+                }
+
+                setPendingReviews(getParsedReviews(reviewData, decodedToken.userId));
+            
+            } catch (error) {
+                console.error('Error fetching pending reviews: ', error);
+            }
+        };
+
         const fetchUserDetails = async () => {
             try {
                 const token = localStorage.getItem('authToken');
@@ -49,7 +96,31 @@ const MerchantDashboard = () => {
         };
 
         fetchUserDetails();
-    }, [navigate]);
+        fetchPendingReviews();
+    
+    }, [currentView, navigate]);
+
+    const handleReview = async (reviewId, action) => {
+        try {
+            const token = localStorage.getItem('authToken');
+
+            if (!token) throw new Error('JWT not found');
+
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/review/${action}/${reviewId}`, {
+                method: 'PATCH',
+                headers: { 'Authorization': token }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to ${action} review`);
+            }
+
+            alert(`Review ${action}ed successfully`);
+
+        } catch (error) {
+            console.error(`Error ${action}ing review: ${error}`);
+        }
+    };
 
     const renderContent = () => {
         const welcomeMessage = userAttributes.first_name ? `Welcome, ${userAttributes.first_name}`: 'Welcome';
@@ -62,39 +133,82 @@ const MerchantDashboard = () => {
             case 'Profile':
                 return <Profile />;
             case 'TransactionHistory':
-                return <TransactionHistory />;
+                return <TransactionHistory balance={accountDetails.balance} />;
             case 'TransferFunds':
-                return <TransferFunds isCancelled={() => setCurrentView('Dashboard')}/>;
+                return <TransferFunds isCancelled={() => setCurrentView('Dashboard')} isCompleted={() => setCurrentView('TransactionHistory')}/>;
             case 'RequestPayments':
-                return <RequestPayments onCancel={() => setCurrentView('Dashboard')} />;
+                return <RequestPayments isCancelled={() => setCurrentView('Dashboard')} />;
             case 'ReviewRequests':
                 return <ReviewRequests userDetails={userDetails} onCancel={() => setCurrentView('ReviewRequests')} />;
             default:
                 return (
                     <div className='welcome-message'>
-                        <center>
-                            <h1>{welcomeMessage}</h1>
-                            <p className='welcome-message'>
-                                Last Login: {lastLogin}
-                            </p>
-                            <br /><br />
-                            <div>
-                                <h3>Account Number</h3>
-                                <p className='user-details'>{accountDetails.accountNumber}</p>
-                            </div>
-                            <br /><br />
-                            <div>
-                                <h3>Current Balance</h3>
-                                <p className='user-details'>${accountDetails.balance}</p>
-                            </div>
-                        </center>
+                        <div className='welcome-message'>
+                            <center>
+                                <h1>{welcomeMessage}</h1>
+                                <p className='welcome-message'>
+                                    Last Login: {lastLogin}
+                                </p>
+                                <br />
+                                <div className='account-overview'>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th><h3>Account Number</h3></th>
+                                                <th><h3>Current Balance</h3></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><p className='user-details'>{accountDetails.accountNumber}</p></td>
+                                                <td><p className='user-details'>${accountDetails.balance}</p></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br /><hr /><br /><br />
+                                <div className='pending-reviews'>
+                                    <h2>Pending Reviews</h2>
+                                    <br />
+                                    {pendingReviews.length > 0 ? (
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Type</th>
+                                                    <th>From</th>
+                                                    <th>Review Item</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {pendingReviews.map((review) => (
+                                                    <tr>
+                                                        <td>{review.type}</td>
+                                                        <td>{review.name}</td>
+                                                        <td>{review.reviewItem}</td>
+                                                        <td>
+                                                        {!review.type === 'HIGH VALUE TXN' && (
+                                                            <><button onClick={() => handleReview(review.id, 'authorize')}>Approve</button>
+                                                            <button onClick={() => handleReview(review.id, 'reject')}>Reject</button></>
+                                                        )}
+                                                    </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    ) : (
+                                        <p>No pending reviews found</p>
+                                    )}
+                                </div>
+                            </center>
+                        </div>
                     </div>
                 );
         }
     };
 
     return (
-        <div className="user-dashboard">
+        <div className="external-dashboard">
             <nav>
                 <button onClick={() => setCurrentView('Dashboard')}>Home</button>
                 <button onClick={() => setCurrentView('Profile')}>Profile</button>

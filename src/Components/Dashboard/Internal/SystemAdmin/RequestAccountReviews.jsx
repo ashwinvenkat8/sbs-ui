@@ -6,7 +6,7 @@ const RequestReviews = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch('');// api to fetch usr lists
+                const response = await fetch('');
                 if (!response.ok) {
                     throw new Error('Failed to fetch users');
                 }
@@ -22,9 +22,9 @@ const RequestReviews = () => {
 
     const handleRequestView = async (userId) => {
         try {
-            const response = await fetch(`/api/users/${userId}/request-view`, {       //api to request review
-                method: 'POST', // Assuming it's a POST request. Adjust accordingly.
-                // Include headers if needed, like Authorization header for JWT tokens
+            const response = await fetch(`/api/users/${userId}/request-view`, {
+                method: 'POST',
+                
             });
             if (!response.ok) {
                 throw new Error('Failed to send view request');
@@ -37,7 +37,7 @@ const RequestReviews = () => {
     };
 
     return (
-        <div>
+        <div className="request-review">
             <h2>Requested Account Reviews</h2>
             <ul>
                 {users.map((user) => (

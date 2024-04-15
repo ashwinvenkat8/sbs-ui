@@ -9,7 +9,7 @@ const Error = () => {
       <div className="home-banner-container">
         <div className="home-text-section">
           <h1 className="primary-heading">
-            418 I'm a teapot :)
+            404
           </h1>
           <p className="primary-text">
             This has not been implemented yet.
