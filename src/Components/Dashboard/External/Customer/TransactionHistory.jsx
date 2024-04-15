@@ -15,7 +15,8 @@ const getParsedTxns = (transactions) => {
             type: transaction.type,
             amount: transaction.amount,
             from: `${fromFirstName} ${fromLastName} ${fromACNo}`,
-            to: `${toFirstName} ${toLastName} ${toACNo}`
+            to: `${toFirstName} ${toLastName} ${toACNo}`,
+            status: transaction.status
         });
     });
 
@@ -70,6 +71,7 @@ export function TransactionHistory({ balance }) {
                                 <th>From</th>
                                 <th>To</th>
                                 <th>Amount</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -78,6 +80,7 @@ export function TransactionHistory({ balance }) {
                                     <td>{transaction.from}</td>
                                     <td>{transaction.to}</td>
                                     <td className={transaction.type.toLowerCase()}>{transaction.amount}</td>
+                                    <td>{transaction.status}</td>
                                 </tr>
                             ))}
                         </tbody>

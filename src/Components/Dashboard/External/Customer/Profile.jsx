@@ -93,12 +93,12 @@ export function Profile() {
                 }
             );
 
-            if (!response.ok) throw new Error("Failed to update user details");
+            if (!response.ok) throw new Error("Failed to update customer details");
             alert("User details updated successfully!");
             setEditMode(false);
 
         } catch (error) {
-            alert("Error updating user details:", error);
+            alert("Error updating customer details:", error);
         }
     };
 

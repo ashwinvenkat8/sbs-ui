@@ -1,70 +1,87 @@
 import React, { useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
-export function RequestPayments({ onCancel }) {
-    const [accountNumber, setAccountNumber] = useState(Number);
-    const [amount, setAmount] = useState(Number);
+export function RequestPayments({ isCancelled }) {
+    const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState("");
+    const [formData, setFormData] = useState({});
 
-    const handleTransfer = async () => {
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+        setErrorMessage("");
+    };
+
+    const handleRequest = async () => {
         try {
             const token = localStorage.getItem('authToken');
-            const decodeToken = jwtDecode(token);
-
-            const accountId = decodeToken.accountId;
-
-            const accountResponse = await fetch(`${process.env.REACT_APP_API_URL}/user/account/${accountId}`, {
-                headers: { 'Authorization': token }
-            });
-            if (!accountResponse.ok) throw new Error('Failed to fetch user details');
             
-            const data = await accountResponse.json();
-            
-            setAccountNumber(data.accountNumber);
-            
-            // Assuming you have an API endpoint to handle fund transfers
             const response = await fetch(`${process.env.REACT_APP_API_URL}/transaction/pay/request`, {
                 method: 'POST',
                 headers: {
                     'Authorization': token,
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    accountNumber: accountNumber,
-                    amount: amount,
+                    accountNumber: formData.accountNumber,
+                    amount: formData.amount
                 }),
             });
-            if (!response.ok) throw new Error('Failed to request funds');
+            
             const responseJson = await response.json();
+            
+            if (!response.ok) throw new Error('Failed to request payment');
+            
             alert(responseJson.message);
+            navigate('/');
+        
         } catch (error) {
-            alert(error);
+            console.error('Error: ', error);
         }
     };
 
     return (
-        <div>
-            <h2>Transfer Funds</h2>
-
-            <div>
-                <label>Account Number:</label>
-                <input
-                    type="number"
-                    value={accountNumber}
-                    onChange={e => setAccountNumber(e.target.value)}
-                    placeholder="Enter recipient's account number"
-                />
-            </div>
-            <div>
-                <label>Amount:</label>
-                <input
-                    type="number"
-                    value={amount}
-                    onChange={e => setAmount(e.target.value)}
-                    placeholder="Enter amount to request"
-                />
-            </div>
-            <button onClick={handleTransfer}>Request</button>
-            <button onClick={onCancel}>Cancel</button>
+        <div className="transfer-funds">
+            <center>
+                <h2>Request Payment</h2>
+                <br /><br />
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Account Number</th>
+                            <td>
+                                <input
+                                    name="accountNumber"
+                                    type="number"
+                                    value={formData.accountNumber}
+                                    onChange={handleChange}
+                                    placeholder="Recipient AC No."
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Amount</th>
+                            <td>
+                                <input
+                                    name="amount"
+                                    type="number"
+                                    value={formData.amount}
+                                    onChange={handleChange}
+                                    placeholder="Amount"
+                                />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                {errorMessage && <div className="error-message"><center>{errorMessage}</center></div>}
+                <br />
+                <button className="send-funds" onClick={handleRequest}>Send</button>
+                <button className="cancel-transfer" onClick={isCancelled}>Cancel</button>
+            </center>
         </div>
     );
 }

@@ -1,23 +1,66 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
-export function NewPayment({ token, onCancel, onFundsAdded }) {
-    const [amount, setAmount] = useState('');
+export function NewPayment({ isCancelled }) {
+    const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState("");
+    const [formData, setFormData] = useState({});
+    const [merchantList, setMerchantList] = useState([]);
 
-    const handleAddFunds = async () => {
-        if (!amount) {
-            alert('Please enter an amount.');
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+        setErrorMessage("");
+    };
+
+    useEffect(() => {
+        const fetchMerchants = async () => {
+            const token = localStorage.getItem('authToken');
+
+            try {
+                const merchantsResponse = await fetch(`${process.env.REACT_APP_API_URL}/user/merchants`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': token,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const merchantData = await merchantsResponse.json();
+                
+                if (!merchantsResponse.ok) throw new Error('Failed to fetch merchants');
+
+                setMerchantList(merchantData);
+
+            } catch (error) {
+                console.error('Error fetching merchants:', error);
+            }
+        };
+
+        fetchMerchants();
+    
+    }, []);
+
+    const handlePayment = async () => {
+        const token = localStorage.getItem('authToken');
+        
+        if (!formData.amount) {
+            setErrorMessage('Please enter an amount.');
             return;
         }
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/transaction/pay/`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/transaction/pay/${formData.merchant}`, {
                 method: 'POST',
                 headers: {
                     'Authorization': token,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    amount: parseFloat(amount),
+                    amount: parseFloat(formData.amount),
                 }),
             });
 
@@ -25,9 +68,7 @@ export function NewPayment({ token, onCancel, onFundsAdded }) {
             const result = await response.json();
 
             alert(`Payment succeeded! Current balance: ${result.newBalance}`);
-
-            onFundsAdded(result.newBalance);
-            setAmount('');
+            navigate('/');
 
         } catch (error) {
             console.error('Error during payment:', error);
@@ -43,21 +84,42 @@ export function NewPayment({ token, onCancel, onFundsAdded }) {
                 <table>
                     <tbody>
                         <tr>
+                            <th>Merchant</th>
+                            <td>
+                                <select
+                                    name="merchant"
+                                    value={formData.merchant}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    <option value="">Select Merchant</option>
+                                    {merchantList.map((merchant) => (
+                                        <option key={merchant.payment_id} value={merchant.payment_id}>
+                                            {merchant.business_name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
                             <th>Amount</th>
                             <td>
                                 <input
+                                    name="amount"
                                     type="number"
-                                    value={amount}
-                                    onChange={(e) => setAmount(e.target.value)}
+                                    value={formData.amount}
+                                    onChange={handleChange}
                                     placeholder="Amount"
                                 />
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <br /><br />
-                <button className='confirm-pay' onClick={handleAddFunds}>Pay</button>
-                <button className='cancel-pay' onClick={onCancel}>Cancel</button>
+                <br />
+                {errorMessage && <div className="error-message"><center>{errorMessage}</center></div>}
+                <br />
+                <button className='confirm-pay' onClick={handlePayment}>Pay</button>
+                <button className='cancel-pay' onClick={isCancelled}>Cancel</button>
             </center>
         </div>
     );

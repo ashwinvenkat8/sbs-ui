@@ -3,13 +3,12 @@ import { jwtDecode } from "jwt-decode";
 import DOMPurify from "dompurify";
 
 export function Profile() {
-    const [userDetails, setUserDetails] = useState({});
-    const [userAttributes, setUserAttributes] = useState({});
-    const [accountDetails, setAccountDetails] = useState({});
+    const [errorMessage, setErrorMessage] = useState("");
     const [editMode, setEditMode] = useState(false);
     const [userId, setUserId] = useState(null);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [token, setToken] = useState("");
+    const [accountDetails, setAccountDetails] = useState({});
+    const [userDetails, setUserDetails] = useState({});
+    const [userAttributes, setUserAttributes] = useState({});
     const [formData, setFormData] = useState({
         firstName: "",
         middleName: "",
@@ -22,13 +21,13 @@ export function Profile() {
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
-                const authToken = localStorage.getItem("authToken");
-                const decodedToken = jwtDecode(authToken);
+                const token = localStorage.getItem("authToken");
+                const decodedToken = jwtDecode(token);
 
                 const accountResponse = await fetch(
                     `${process.env.REACT_APP_API_URL}/user/account/${decodedToken.accountId}`,
                     {
-                        headers: { Authorization: authToken },
+                        headers: { Authorization: token },
                     }
                 );
 
@@ -37,7 +36,6 @@ export function Profile() {
 
                 const accountData = await accountResponse.json();
 
-                setToken(authToken);
                 setUserId(decodedToken.userId);
                 setAccountDetails(accountData);
                 setUserDetails(accountData.user);
@@ -50,41 +48,30 @@ export function Profile() {
     }, []);
 
     const submitUpdatedProfile = async () => {
+        const token = localStorage.getItem("authToken");
+        
         try {
-            if (
-                !formData.firstName &&
-                !formData.middleName &&
-                !formData.lastName &&
-                !formData.gender &&
-                !formData.address &&
-                !formData.phoneNumber
-            ) {
+            if(!formData.firstName && !formData.middleName && !formData.lastName && !formData.gender && !formData.address && !formData.phoneNumber) {
                 setErrorMessage("Please fill in at least one field to update");
                 return;
             }
 
-            if (formData.firstName && !/^[a-zA-Z]+$/.test(formData.firstName)) {
+            if(formData.firstName && !/^[a-zA-Z]+$/.test(formData.firstName)) {
                 setErrorMessage("First name must consist of alphabets only");
                 return;
             }
-
-            if (
-                formData.middleName &&
-                !/^[a-zA-Z]+$/.test(formData.middleName)
-            ) {
+            
+            if(formData.middleName && !/^[a-zA-Z]+$/.test(formData.middleName)) {
                 setErrorMessage("Middle name must consist of alphabets only");
                 return;
             }
-
-            if (formData.lastName && !/^[a-zA-Z]+$/.test(formData.lastName)) {
+            
+            if(formData.lastName && !/^[a-zA-Z]+$/.test(formData.lastName)) {
                 setErrorMessage("Last name must consist of alphabets only");
                 return;
             }
-
-            if (
-                formData.phoneNumber &&
-                !/^[0-9]{10}$/.test(formData.phoneNumber)
-            ) {
+            
+            if(formData.phoneNumber && !/^[0-9]{10}$/.test(formData.phoneNumber)) {
                 setErrorMessage("Phone number must be 10 digits");
                 return;
             }
@@ -112,31 +99,20 @@ export function Profile() {
                 }
             );
 
-            if (!response.ok) throw new Error("Failed to update user details");
-            alert("User details updated successfully!");
+            if (!response.ok) throw new Error("Failed to update merchant details");
+            alert("Merchant details updated successfully!");
             setEditMode(false);
+        
         } catch (error) {
-            console.error("Error updating user details:", error);
+            console.error("Error updating merchant details:", error);
         }
     };
-
-    const onCancel = () => {
-      setEditMode(false);
-      setFormData({
-        firstName: "",
-        middleName: "",
-        lastName: "",
-        gender: "",
-        address: "",
-        phoneNumber: "",
-      })
-    }
 
     return (
         <div className="profile">
             {!editMode ? (
                 <center>
-                    <h2>User Profile</h2>
+                    <h2>Merchant Profile</h2>
                     <br />
                     <table>
                         <tbody>
@@ -316,7 +292,7 @@ export function Profile() {
                     )}
                     <br />
                     <button onClick={submitUpdatedProfile}>Save</button>
-                    <button onClick={() => onCancel()}>Cancel</button>
+                    <button onClick={() => setEditMode(false)}>Cancel</button>
                 </center>
             )}
         </div>

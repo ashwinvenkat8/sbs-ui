@@ -1,4 +1,4 @@
-.customer-dashboard {
+.external-dashboard {
     font-family: Arial, sans-serif;
     width: 70vw;
     max-width: 100vw;
@@ -7,7 +7,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.customer-dashboard button {
+.external-dashboard button {
     display: inline-block;
     width: max-content;
     padding: 0.7rem 1rem;
@@ -21,26 +21,26 @@
     font-weight: 450;
 }
 
-.customer-dashboard button:hover {
+.external-dashboard button:hover {
     background-color: #fff;
     color: #005;
     transition: 0.2s;
 }
 
-.customer-dashboard .logout:hover {
+.external-dashboard .logout:hover {
     border: 1px solid #e00;
     color: #e00;
 }
 
-.customer-dashboard .welcome-message,
-.customer-dashboard .user-details {
+.external-dashboard .welcome-message,
+.external-dashboard .user-details {
     margin: 1rem;
     padding: 0;
 }
 
-.customer-dashboard h1,
-.customer-dashboard h2,
-.customer-dashboard h3 {
+.external-dashboard h1,
+.external-dashboard h2,
+.external-dashboard h3 {
     color: #005;
     text-align: center;
 }
