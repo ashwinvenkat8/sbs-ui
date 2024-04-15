@@ -59,6 +59,7 @@ export function RequestPayments({ isCancelled }) {
                                     value={formData.accountNumber}
                                     onChange={handleChange}
                                     placeholder="Recipient AC No."
+                                    required
                                 />
                             </td>
                         </tr>
@@ -71,6 +72,7 @@ export function RequestPayments({ isCancelled }) {
                                     value={formData.amount}
                                     onChange={handleChange}
                                     placeholder="Amount"
+                                    required
                                 />
                             </td>
                         </tr>

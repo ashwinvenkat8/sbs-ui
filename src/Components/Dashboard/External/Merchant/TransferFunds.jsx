@@ -103,6 +103,7 @@ export function TransferFunds({ isCancelled, isCompleted }) {
                                         value={toAccountNumber}
                                         onChange={(e) => setToAccountNumber(e.target.value)}
                                         placeholder="Enter recipient's account number"
+                                        required
                                     />
                                 </td>
                             </tr>
@@ -114,6 +115,7 @@ export function TransferFunds({ isCancelled, isCompleted }) {
                                         value={amount}
                                         onChange={(e) => setAmount(e.target.value)}
                                         placeholder="Enter amount to transfer"
+                                        required
                                     />
                                 </td>
                             </tr>
@@ -128,6 +130,7 @@ export function TransferFunds({ isCancelled, isCompleted }) {
                                     value={transactionOTP}
                                     onChange={(e) => setTransactionOTP(e.target.value)}
                                     placeholder="Enter OTP"
+                                    required
                                 />
                             </tr>
                         </tbody>

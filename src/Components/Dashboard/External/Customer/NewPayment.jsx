@@ -112,6 +112,7 @@ export function NewPayment({ isCancelled }) {
                                         value={formData.amount}
                                         onChange={handleChange}
                                         placeholder="Amount"
+                                        required
                                     />
                                 </td>
                             </tr>
