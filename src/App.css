@@ -36,12 +36,24 @@ nav {
   margin: 0 auto;
 }
 
+.error-container,
+.home-container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+}
+
+.error-banner-container,
 .home-banner-container {
   position: relative;
   display: flex;
   padding-top: 3rem;
 }
 
+.error-text-section,
 .home-text-section {
   display: flex;
   flex-direction: column;
@@ -62,6 +74,19 @@ nav {
   max-width: 50vw;
   text-align: center;
   margin: 5rem;
+}
+
+.secondary-heading {
+  font-size: clamp(2rem, 3vw, 4rem);
+  max-width: 600px;
+  text-align: center;
+}
+
+.secondary-text {
+  font-size: clamp(2rem, 3vw, 4rem);
+  max-width: 50vw;
+  text-align: center;
+  margin: 2rem 0 1rem 0;
 }
 
 .auth-buttons {
@@ -91,4 +116,23 @@ nav {
   color: #005;
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.error-container .link {
+  color: #005;
+  font-size: clamp(1rem, 1.5rem, 2rem);
+  font-weight: 450;
+  text-decoration: none;
+}
+
+.error-container .link:hover {
+  text-decoration: underline;
+}
+
+.error-container .home {
+  color: #666;
+}
+
+.error-container .home:hover {
+  color: #005;
 }

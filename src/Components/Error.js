@@ -1,21 +1,21 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Error = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="home-container">
-      <div className="home-banner-container">
-        <div className="home-text-section">
-          <h1 className="primary-heading">
+    <div className="error-container">
+      <div className="error-banner-container">
+        <div className="error-text-section">
+          <h2 className="secondary-heading">
+            Page Not Found
+          </h2>
+          <p className="secondary-text">
             404
-          </h1>
-          <p className="primary-text">
-            This has not been implemented yet.
           </p>
           <div className="auth-buttons">
-            <button className="primary-button" onClick={() => navigate('/')}>Home</button>
+            <Link className="link home" to="/">&lt; Home</Link>
           </div>
         </div>
       </div>

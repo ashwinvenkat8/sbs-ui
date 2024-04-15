@@ -151,7 +151,7 @@ const LoginForm = () => {
 
     return (
         <div className="login-container">
-            <center><img src="logo512.png" alt="The logo of EasyBank, which is the name itself in Wavefont" /></center>
+            <center><img className="easybank-logo" src="logo512.png" alt="The logo of EasyBank, which is the name itself in Wavefont" /></center>
             <h1>Login</h1>
             <br />
             <form onSubmit={isOtpRequired ? handleOtpVerification : handleLoginSubmit}>
@@ -210,13 +210,10 @@ const LoginForm = () => {
                 <br />
                 {!isOtpRequired && (
                     <div>
-                        <center>
-                            <Link className="link" to="/register">Register</Link>
-                            <Link className="link" to="/forgot-password">Forgot Password</Link>
-                        </center>
+                        <center><Link className="link" to="/register">Register</Link></center>
                     </div>
                 )}
-                <br />
+                <br /><br />
                 <center>
                     <Link className="link home" to="/">&lt; Home</Link>
                 </center>

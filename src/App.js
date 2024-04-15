@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Navigate, createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
 import Home from './Components/Home';
 import Error from './Components/Error';
@@ -16,58 +16,71 @@ const ProtectedRoute = ({ children }) => {
     return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
+const router = createBrowserRouter([
+    {
+        errorElement: <Error />,
+        children: [
+            {
+                path: '/',
+                element: <Home />,
+            },
+            {
+                path: '/login',
+                element: <LoginForm />,
+            },
+            {
+                path: '/register',
+                element: <RegistrationForm />,
+            },
+            {
+                path: '/customer/dashboard',
+                element: (
+                    <ProtectedRoute>
+                        <CustomerDashboard />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: '/merchant/dashboard',
+                element: (
+                    <ProtectedRoute>
+                        <MerchantDashboard />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: '/internal/admin/dashboard',
+                element: (
+                    <ProtectedRoute>
+                        <AdminDashboard />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: '/internal/manager/dashboard',
+                element: (
+                    <ProtectedRoute>
+                        <ManagerDashboard />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: '/internal/employee/dashboard',
+                element: (
+                    <ProtectedRoute>
+                        <EmployeeDashboard />
+                    </ProtectedRoute>
+                ),
+            },
+        ]
+    }
+]);
+
 const App = () => {
     return (
-        <Router>
-            <div className="App">
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<LoginForm />} />
-                    <Route path="/register" element={<RegistrationForm />} />
-                    <Route path="/forgot-password" element={<Error />} />
-                    <Route
-                        path="/customer/dashboard"
-                        element={
-                            <ProtectedRoute>
-                                <CustomerDashboard />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/merchant/dashboard"
-                        element={
-                            <ProtectedRoute>
-                                <MerchantDashboard />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/internal/admin/dashboard"
-                        element={
-                            <ProtectedRoute>
-                                <AdminDashboard />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/internal/manager/dashboard"
-                        element={
-                            <ProtectedRoute>
-                                <ManagerDashboard />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/internal/employee/dashboard"
-                        element={
-                            <ProtectedRoute>
-                                <EmployeeDashboard />
-                            </ProtectedRoute>
-                        }
-                    />
-                </Routes>
-            </div>
-        </Router>
+        <div className="App">
+            <RouterProvider router={router} />;
+        </div>
     );
 }
 
